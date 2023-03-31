@@ -90,6 +90,7 @@ public class Board {
     }
     public void addPlayers(Player player) {
         this.players.add(player);
+        player.setBoard(this);
     }
     public Player getBanker() {
         return banker;

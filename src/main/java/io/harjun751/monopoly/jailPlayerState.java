@@ -1,11 +1,11 @@
 package io.harjun751.monopoly;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class jailPlayerBehaviour implements PlayerStateBehaviour {
+public class jailPlayerState implements PlayerStateBehaviour {
     Player player;
     private int turnsInJail;
 
-    public jailPlayerBehaviour(Player Player) {
+    public jailPlayerState(Player Player) {
         this.player = Player;
         this.turnsInJail = 0;
         player.setCurrPosition(9);
@@ -15,7 +15,7 @@ public class jailPlayerBehaviour implements PlayerStateBehaviour {
         // Check for gooj card
         // if have, immediately expend it
         if (player.getGoojCards().size()>0){
-            player.changeState(new defaultPlayerBehaviour(player));
+            player.changeState(new defaultPlayerState(player));
             player.removeGoojCard();
             return;
         }

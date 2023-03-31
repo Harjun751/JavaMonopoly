@@ -6,12 +6,12 @@ public class advanceAction extends SpecialActionCard{
     public void doAction(Player cardDrawer){
         if (cardDrawer.getCurrPosition()>positionToBe){
             // pass go, collect 200
-            Monopoly.gameboard.getBanker().pay(200, cardDrawer);
+            cardDrawer.getBoard().getBanker().pay(200, cardDrawer);
         }
         cardDrawer.setCurrPosition(positionToBe);
         if (payDouble){
             // If pay double, do one payment here and another in HandlePlayerLanding
-            BoardSpace space = Monopoly.gameboard.getBoardSpace(cardDrawer.getCurrPosition());
+            BoardSpace space = cardDrawer.getBoard().getBoardSpace(cardDrawer.getCurrPosition());
             PropertySpace propertyspace = (PropertySpace) space;
             if (propertyspace.getOwner()!=null){
                 double rent = propertyspace.getRent();

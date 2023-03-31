@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.*;
 import java.util.Map;
 
+
 public class Player {
     private int id;
     private double cash;
@@ -13,6 +14,16 @@ public class Player {
     private PlayerStateBehaviour state;
     private int diceroll;
 
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    private Board board;
+
     
     public Player(int ID) {
         this.id = ID;
@@ -20,7 +31,7 @@ public class Player {
         this.currPosition = 0;
         this.properties = new ArrayList<PropertySpace>();
         this.goojCards = new ArrayList<getOutJailAction>();
-        this.state = new defaultPlayerBehaviour(this);
+        this.state = new defaultPlayerState(this);
     }
 
     public Player(int ID, double Cash){
@@ -29,7 +40,7 @@ public class Player {
         this.currPosition = 0;
         this.properties = new ArrayList<PropertySpace>();
         this.goojCards = new ArrayList<getOutJailAction>();
-        this.state = new defaultPlayerBehaviour(this);
+        this.state = new defaultPlayerState(this);
     }
     
     public void changeState(PlayerStateBehaviour State){
@@ -45,18 +56,18 @@ public class Player {
         int currentPosition = this.currPosition;
         // >38
         int finalPosition = currentPosition + roll;
-        if (finalPosition>38){
+        if (finalPosition>39){
             // pass go, collect 200
-            Monopoly.gameboard.getBanker().pay(200, this);
+            this.board.getBanker().pay(200, this);
             // reset position
-            finalPosition = finalPosition - 39;
+            finalPosition = finalPosition - 40;
         }
         this.setCurrPosition(finalPosition);
         return finalPosition;
     }
 
     public void handlePlayerLanding(){
-        BoardSpace space = Monopoly.gameboard.getBoardSpace(this.getCurrPosition());
+        BoardSpace space = this.board.getBoardSpace(this.getCurrPosition());
         System.out.println("i landed on " + this.getCurrPosition());
         if (space instanceof PropertySpace){
             PropertySpace propertyspace = (PropertySpace) space;
@@ -68,7 +79,7 @@ public class Player {
                 this.pay(rent, propertyspace.getOwner());
             } else {
                 if (this.getCash() >= propertyspace.getBuyCost()){
-                    this.pay(propertyspace.getBuyCost(), Monopoly.gameboard.getBanker());
+                    this.pay(propertyspace.getBuyCost(), this.board.getBanker());
                     System.out.println("i bought popety");
                     propertyspace.setOwner(this);
                     this.addProperties(propertyspace);
@@ -82,19 +93,19 @@ public class Player {
             SpecialActionCard card = null;
             // TODO: REFACTOR
             if (ccSpace.isChanceSpace()){
-                card = Monopoly.gameboard.getTopChanceCard();
+                card = this.board.getTopChanceCard();
                 if (!(card instanceof getOutJailAction)){
-                    Monopoly.gameboard.insertChanceCard(card);
+                    this.board.insertChanceCard(card);
                 }
             } else {
-                card = Monopoly.gameboard.getTopComChestCard();
+                card = this.board.getTopComChestCard();
                 if (!(card instanceof getOutJailAction)){
-                    Monopoly.gameboard.insertComChestCard(card);
+                    this.board.insertComChestCard(card);
                 }
             }
             card.doAction(this);
         } else if (space instanceof GoJailSpace){
-            this.changeState(new jailPlayerBehaviour(this));
+            this.changeState(new jailPlayerState(this));
         }
     }
 
@@ -135,7 +146,7 @@ public class Player {
         for (TitleDeed deed : colorSet){
             if (deed.hotel!=null){
                 // Banker pays player the cost of the hotel by half
-                Monopoly.gameboard.getBanker().pay(deed.getHouseCost()/2, this);
+                this.board.getBanker().pay(deed.getHouseCost()/2, this);
                 deed.hotel = null;
                 if (this.cash>=cost){
                     return true;
@@ -154,7 +165,7 @@ public class Player {
         }
 
         if (deedHouseToSell!=null){
-            Monopoly.gameboard.getBanker().pay(deedHouseToSell.getHouseCost()/2, this);
+            this.board.getBanker().pay(deedHouseToSell.getHouseCost()/2, this);
             deedHouseToSell.houses.remove(0);
             if (this.cash>=cost){
                 return true;

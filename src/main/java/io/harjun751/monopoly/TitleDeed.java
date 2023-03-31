@@ -33,9 +33,9 @@ public class TitleDeed extends PropertySpace{
     public void buyHouse(){
         // Check if owner has full color set
         // At the same time, check that the building is happening evenly
-        int smallestHouseAmnt = 0;
+        int smallestHouseAmnt = 5;
 
-        ArrayList<BoardSpace> boardSpaces = Monopoly.gameboard.getBoardSpaces();
+        ArrayList<BoardSpace> boardSpaces = this.getOwner().getBoard().getBoardSpaces();
         List<TitleDeed> propertyColorSet = boardSpaces.stream()
                                                 .filter(boardspace -> boardspace instanceof TitleDeed)
                                                 .map(property -> (TitleDeed)property)
@@ -55,17 +55,17 @@ public class TitleDeed extends PropertySpace{
         // Check if owner is building evenly
         if (this.houses.size()>smallestHouseAmnt){
             System.out.println("Oi mate you don't have a loicense for that (Not building evenly)");
+            return;
         }
 
         // Buy house from banker
-        if (houses.size()<4){
-            this.getOwner().pay(houseCost, Monopoly.gameboard.getBanker());
+        if (houses.size()<5){
+            this.getOwner().pay(houseCost, this.getOwner().getBoard().getBanker());
             this.houses.add(new House());
         }
 
-        // Check this implementation
-        if (houses.size()==4){
-            this.getOwner().pay(houseCost, Monopoly.gameboard.getBanker());
+        if (houses.size()==5){
+            this.getOwner().pay(houseCost, this.getOwner().getBoard().getBanker());
             this.hotel = new Hotel();
         }
 
@@ -75,7 +75,7 @@ public class TitleDeed extends PropertySpace{
     public double getRent(){
         // Check for full color set
         boolean isFullColorSet = true;
-        ArrayList<BoardSpace> boardSpaces = Monopoly.gameboard.getBoardSpaces();
+        ArrayList<BoardSpace> boardSpaces = this.getOwner().getBoard().getBoardSpaces();
         List<TitleDeed> propertyColorSet = boardSpaces.stream()
                                                 .filter(boardspace -> boardspace instanceof TitleDeed)
                                                 .map(property -> (TitleDeed)property)

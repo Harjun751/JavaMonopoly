@@ -3,4 +3,4 @@
 3. Implement "Advance to nearest MRT station" card
 4. implement logger
 5. unit tests
-6. implement dice doubles behaviour
+7. Reimplement way the gameboard is obtained - it's all over the place

@@ -4,7 +4,7 @@ public class collectBankAction extends SpecialActionCard{
 
     public void doAction(Player cardDrawer){
         // banker pays card value to player
-        Monopoly.gameboard.getBanker().pay(value, cardDrawer);
+        cardDrawer.getBoard().getBanker().pay(value, cardDrawer);
     }    
     public collectBankAction(double Value) {
         value = Value;

@@ -10,6 +10,6 @@ public class TaxSpace extends BoardSpace {
     }
 
     public void payTax(Player player){
-        player.pay(value, Monopoly.gameboard.getBanker());
+        player.pay(value, player.getBoard().getBanker());
     }
 }

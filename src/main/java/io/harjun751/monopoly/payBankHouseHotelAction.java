@@ -18,7 +18,7 @@ public class payBankHouseHotelAction extends SpecialActionCard{
             
         }
 
-        cardDrawer.pay(toPay, Monopoly.gameboard.getBanker());
+        cardDrawer.pay(toPay, cardDrawer.getBoard().getBanker());
     }
 
     public payBankHouseHotelAction(double PerHouse, double PerHotel) {
