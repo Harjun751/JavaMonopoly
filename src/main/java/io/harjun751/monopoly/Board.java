@@ -1,6 +1,8 @@
 package io.harjun751.monopoly;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.*;
 import java.util.Collections;
 
@@ -8,19 +10,19 @@ public class Board {
     private ArrayList<SpecialActionCard> chanceCards;
     private ArrayList<SpecialActionCard> comChestCards;
     private ArrayList<BoardSpace> boardSpaces;
-    private ArrayList<Player> players;
+    private CopyOnWriteArrayList<Player> players;
     private Player banker;
 
     public Board() {
         chanceCards = new ArrayList<SpecialActionCard> ();
         comChestCards = new ArrayList<SpecialActionCard> ();
         boardSpaces = new ArrayList<BoardSpace> ();
-        players = new ArrayList<Player> ();
+        players = new CopyOnWriteArrayList<Player> ();
         banker = null;
     }
 
     public void playGame(){
-        while (true){
+        while (players.size()!=0){
             for (Player player : players){
                 player.doTurn();
             }
@@ -42,6 +44,9 @@ public class Board {
         this.players.remove(player);
         if (players.size()==1){
             System.out.println("Game ended! 1 player remaining!");
+            Player winner = players.get(0);
+            System.out.println("Player won with $"+winner.getCash()+" and "+winner.getProperties().size()+" properties");
+            this.players.remove(winner);
         }
         System.out.println("Bankrupted...");
     }
@@ -85,7 +90,7 @@ public class Board {
         Collections.shuffle(ComChestCards);
         this.comChestCards = ComChestCards;
     }
-    public ArrayList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
     public void addPlayers(Player player) {

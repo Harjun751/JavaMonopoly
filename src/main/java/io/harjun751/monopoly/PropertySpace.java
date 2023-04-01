@@ -23,6 +23,13 @@ public abstract class PropertySpace extends BoardSpace{
 
     public abstract double getRent();
 
+    public void mortgage(){
+        if (!this.isMortgaged){
+            this.isMortgaged = true;
+            this.owner.getBoard().getBanker().pay(this.mortgagePrice, this.owner);
+        }
+    }
+
 
 
 
@@ -69,5 +76,8 @@ public abstract class PropertySpace extends BoardSpace{
 
     public void setOwner(Player owner) {
         this.owner = owner;
+        if (owner!=null){
+            owner.addProperties(this);
+        }
     }
 }

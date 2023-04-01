@@ -128,19 +128,11 @@ class TitleDeedTest {
         serangoon.setOwner(testPlayer);
 
         // act
-        bidadari.buyHouse();
-        sengkang.buyHouse();
-        serangoon.buyHouse();
-        bidadari.buyHouse();
-        sengkang.buyHouse();
-        serangoon.buyHouse();
-        bidadari.buyHouse();
-        sengkang.buyHouse();
-        serangoon.buyHouse();
-        bidadari.buyHouse();
-        sengkang.buyHouse();
-        serangoon.buyHouse();
-
+        for (int i=0;i<4;i++){
+            for (TitleDeed deed : Arrays.asList(bidadari,sengkang,serangoon)){
+                deed.buyHouse();
+            }
+        }
         bidadari.buyHouse();
 
         // assert
@@ -164,18 +156,11 @@ class TitleDeedTest {
         serangoon.setOwner(testPlayer);
 
         // act
-        bidadari.buyHouse();
-        sengkang.buyHouse();
-        serangoon.buyHouse();
-        bidadari.buyHouse();
-        sengkang.buyHouse();
-        serangoon.buyHouse();
-        bidadari.buyHouse();
-        sengkang.buyHouse();
-        serangoon.buyHouse();
-        bidadari.buyHouse();
-        sengkang.buyHouse();
-        serangoon.buyHouse();
+        for (int i=0;i<4;i++){
+            for (TitleDeed deed : Arrays.asList(bidadari,sengkang,serangoon)){
+                deed.buyHouse();
+            }
+        }
 
 
         // assert

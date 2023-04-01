@@ -71,6 +71,10 @@ public class Player {
         System.out.println("i landed on " + this.getCurrPosition());
         if (space instanceof PropertySpace){
             PropertySpace propertyspace = (PropertySpace) space;
+            if (propertyspace.isMortgaged()){
+                // nothing to do here
+                return;
+            }
             if (propertyspace.getOwner()!=null && propertyspace.getOwner()!=this){
                 double rent = propertyspace.getRent();
                 if (propertyspace instanceof Utilities){
@@ -82,7 +86,6 @@ public class Player {
                     this.pay(propertyspace.getBuyCost(), this.board.getBanker());
                     System.out.println("i bought popety");
                     propertyspace.setOwner(this);
-                    this.addProperties(propertyspace);
                 }
             }
         } else if (space instanceof TaxSpace) {
@@ -109,36 +112,51 @@ public class Player {
         }
     }
 
-    public void pay(double value, Player player){
+    public boolean pay(double amnt, Player player){
         // Attempt to pay with cash
-        if (value < this.cash){
+        if (amnt < this.cash){
             // debit from payer
-            this.cash -= value;
+            this.cash -= amnt;
             // credit to recepient
-            player.cash += value;
+            player.cash += amnt;
+            return true;
         } else {
             // oh boy.
-            Map<Integer, List<TitleDeed>> deeds = player.properties.stream()
+            Map<Integer, List<TitleDeed>> deeds = this.properties.stream()
                                                 .filter(property -> property instanceof TitleDeed)
                                                 .map(property -> (TitleDeed)property)
                                                 .collect(Collectors.groupingBy(property -> property.getColor()));
             boolean raisedEnough = false;
             for (Integer key : deeds.keySet()){
                 List<TitleDeed> colorSet = deeds.get(key);
-                raisedEnough = sellHousesEvenly(colorSet, value);
+                raisedEnough = sellHousesEvenly(colorSet, amnt);
                 if (raisedEnough){
                     // debit from payer
-                    this.cash -= value;
-                    // credit to recepient
-                    player.cash += value;
-                    return;
+                    this.cash -= amnt;
+                    // credit to recipient
+                    player.cash += amnt;
+                    return true;
                 }
             }
+            // Mortgage Properties
+            for (PropertySpace property : this.properties){
+                property.mortgage();
+                if (this.cash>=amnt){
+                    // debit from payer
+                    this.cash -= amnt;
+                    // credit to recipient
+                    player.cash += amnt;
+                    return true;
+                }
+            }
+
             if (!raisedEnough){
                 // You're bankrupt.
                 bankruptCleanup();
+                return false;
             }
         }
+        return false;
     }
 
     // Algo could probably use some cleanup
@@ -161,6 +179,7 @@ public class Player {
         for (TitleDeed deed : colorSet){
             if (deed.houses.size()>maxHouses){
                 deedHouseToSell = deed;
+                maxHouses = deed.houses.size();
             }
         }
 
@@ -182,6 +201,7 @@ public class Player {
         for (PropertySpace property : properties){
             property.setOwner(null);
         }
+        this.board.removeBankruptPlayer(this);
     }
 
 

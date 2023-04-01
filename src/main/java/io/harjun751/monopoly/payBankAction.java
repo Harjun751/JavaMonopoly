@@ -4,7 +4,7 @@ public class payBankAction extends SpecialActionCard{
     
     public void doAction(Player cardDrawer){
         // pay to bank
-        cardDrawer.pay(value, board.getBanker());
+        cardDrawer.pay(value, cardDrawer.getBoard().getBanker());
     }
 
     public payBankAction(double Value) {

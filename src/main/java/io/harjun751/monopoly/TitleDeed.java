@@ -59,12 +59,10 @@ public class TitleDeed extends PropertySpace{
         }
 
         // Buy house from banker
-        if (houses.size()<5){
+        if (houses.size()<4){
             this.getOwner().pay(houseCost, this.getOwner().getBoard().getBanker());
             this.houses.add(new House());
-        }
-
-        if (houses.size()==5){
+        } else if (houses.size()==4){
             this.getOwner().pay(houseCost, this.getOwner().getBoard().getBanker());
             this.hotel = new Hotel();
         }

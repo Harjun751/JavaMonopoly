@@ -4,7 +4,7 @@ public class payPlayerAction extends SpecialActionCard{
 
     public void doAction(Player cardDrawer){
         // each player in the game pays the card drawer
-        for (Player player : board.getPlayers()) {
+        for (Player player : cardDrawer.getBoard().getPlayers()) {
             cardDrawer.pay(value, player);
         }
     }
