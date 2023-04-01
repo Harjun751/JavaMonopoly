@@ -5,7 +5,9 @@ public class collectPlayerAction extends SpecialActionCard{
     public void doAction(Player cardDrawer){
         // each player in the game pays the card drawer
         for (Player player : cardDrawer.getBoard().getPlayers()) {
-            player.pay(value, cardDrawer);
+            if (player != cardDrawer){
+                player.pay(value, cardDrawer);
+            }
         }
     }
 

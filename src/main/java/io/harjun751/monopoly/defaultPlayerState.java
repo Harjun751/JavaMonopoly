@@ -13,8 +13,8 @@ public class defaultPlayerState implements PlayerStateBehaviour{
         int numberOfDouble = 0;
         while (isMyTurn){
             // Roll dice
-            int diceRoll1 = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-            int diceRoll2 = ThreadLocalRandom.current().nextInt(1, 6 + 1);
+            int diceRoll1 = player.rollDice();
+            int diceRoll2 = player.rollDice();
             player.movePlayer(diceRoll1 + diceRoll2);
             player.setDiceroll(diceRoll1 + diceRoll2);
             player.handlePlayerLanding();

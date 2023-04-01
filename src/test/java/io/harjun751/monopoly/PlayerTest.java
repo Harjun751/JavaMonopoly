@@ -11,7 +11,7 @@ class PlayerTest {
     @Test
     void testMovePlayerMoves() {
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
         testPlayer.movePlayer(5);
 
@@ -21,7 +21,7 @@ class PlayerTest {
     @Test
     void testMovePlayerMovesFullCircle() {
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
         testPlayer.movePlayer(41);
 
@@ -31,7 +31,7 @@ class PlayerTest {
     @Test
     void testMovePlayerMovesFullCircleAndCollectsGo() {
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
         testPlayer.movePlayer(41);
 
@@ -43,7 +43,7 @@ class PlayerTest {
     void testSellHousesEvenlySellsOneHouse() {
         // arrange
         // create board and player
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
         // Get pink color set and set owner to testPlayer
         TitleDeed woodlands = (TitleDeed) board.getBoardSpace(11);
@@ -60,7 +60,7 @@ class PlayerTest {
     void testPayCreditsRecipient(){
         // arrange
         // create board and player
-        Board board = BoardBootstrapper.getBoard(2);
+        Board board = TestBoardBootstrapper.getBoard(2);
         Player testPayer = board.getPlayers().get(0);
         Player testRecipient = board.getPlayers().get(1);
 
@@ -76,7 +76,7 @@ class PlayerTest {
     void testPayDebitsPayer(){
         // arrange
         // create board and player
-        Board board = BoardBootstrapper.getBoard(2);
+        Board board = TestBoardBootstrapper.getBoard(2);
         Player testPayer = board.getPlayers().get(0);
         Player testRecipient = board.getPlayers().get(1);
 
@@ -91,7 +91,7 @@ class PlayerTest {
     void testPaySellsOneHouse(){
         // arrange
         // create board and player
-        Board board = BoardBootstrapper.getBoard(2);
+        Board board = TestBoardBootstrapper.getBoard(2);
         Player testPayer = board.getPlayers().get(0);
         Player testRecipient = board.getPlayers().get(1);
         // set house owner and buy house
@@ -117,7 +117,7 @@ class PlayerTest {
     void testPayMortgagesProperty(){
         // arrange
         // create board and player
-        Board board = BoardBootstrapper.getBoard(2);
+        Board board = TestBoardBootstrapper.getBoard(2);
         Player testPayer = board.getPlayers().get(0);
         Player testRecipient = board.getPlayers().get(1);
         // set house owner and buy house
@@ -146,7 +146,7 @@ class PlayerTest {
     void testPayReturnsFalseWhenTooExpensive(){
         // arrange
         // create board and player
-        Board board = BoardBootstrapper.getBoard(2);
+        Board board = TestBoardBootstrapper.getBoard(2);
         Player testPayer = board.getPlayers().get(0);
         Player testRecipient = board.getPlayers().get(1);
         // set house owner and buy house
@@ -163,7 +163,7 @@ class PlayerTest {
     @Test
     void testSellHousesEvenlySellsHotel(){
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
 
         TitleDeed bidadari = (TitleDeed) board.getBoardSpace(8);
@@ -194,7 +194,7 @@ class PlayerTest {
     @Test
     void testSellHousesEvenlySells2Hotels(){
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
 
         TitleDeed bidadari = (TitleDeed) board.getBoardSpace(8);
@@ -227,7 +227,7 @@ class PlayerTest {
     @Test
     void testSellHousesEvenlySells4HousesEvenly(){
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
 
         TitleDeed bidadari = (TitleDeed) board.getBoardSpace(8);
@@ -253,4 +253,243 @@ class PlayerTest {
         assertEquals(3, sengkang.houses.size());
     }
 
+    @Test
+    void testHandlePlayerLandingBuysProperty(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(5);
+
+        //act
+        testPlayer.handlePlayerLanding();
+
+        //assert
+        PropertySpace property = (PropertySpace) board.getBoardSpace(5);
+        assertEquals(testPlayer,property.getOwner());
+    }
+
+    @Test
+    void testHandlePlayerLandingPaysRent(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(2);
+        Player testPayer = board.getPlayers().get(0);
+        Player testRecipient = board.getPlayers().get(1);
+        testPayer.setCurrPosition(3);
+        PropertySpace space = (PropertySpace) board.getBoardSpace(3);
+        space.setOwner(testRecipient);
+
+        //act
+        testPayer.handlePlayerLanding();
+
+        //assert
+        assertEquals(1440, testPayer.getCash());
+        assertEquals(1560, testRecipient.getCash());
+    }
+
+    @Test
+    void testHandlePlayerLandingPaysTax(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(38);
+
+
+        //act
+        testPlayer.handlePlayerLanding();
+
+        //assert
+        assertEquals(1300, testPlayer.getCash());
+    }
+
+    @Test
+    void testHandlePlayerLandingUsesChanceCard(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(2);
+
+
+        //act
+        testPlayer.handlePlayerLanding();
+
+        //assert
+
+    }
+
+    @Test
+    void testHandlePlayerLandingUsesCommunityCard(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(7);
+
+
+        //act
+        testPlayer.handlePlayerLanding();
+
+        //assert
+
+    }
+
+    @Test
+    void testHandlePlayerLandingGoesToJail(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(30);
+
+
+        //act
+        testPlayer.handlePlayerLanding();
+
+        //assert
+        assertInstanceOf(jailPlayerState.class, testPlayer.getState());
+    }
+
+    @Test
+    void testHandlePlayerLandingPaysUtilities(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(2);
+        Player testPlayer = board.getPlayers().get(0);
+        Player testOwner = board.getPlayers().get(1);
+        testPlayer.setCurrPosition(12);
+        testPlayer.setDiceroll(12);
+        PropertySpace space = (PropertySpace) board.getBoardSpace(12);
+        space.setOwner(testOwner);
+
+        //act
+        testPlayer.handlePlayerLanding();
+
+        //assert
+        // Dice roll = 12
+        // 12 * 4 = 48
+        assertEquals(1452, testPlayer.getCash());
+        assertEquals(1548, testOwner.getCash());
+    }
+
+    @Test
+    void testHandlePlayerLandingDoesNothingInFreeParking(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(20);
+
+        //act
+        testPlayer.handlePlayerLanding();
+
+        //assert
+        assertEquals(1500, testPlayer.getCash());
+    }
+
+
+    @Test
+    void testDefaultPlayerStateMovesPlayer(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        Player.genny = new RandomNumberGeneratorMock(new ArrayList<>(Arrays.asList(3,1)));
+
+        //act
+        testPlayer.doTurn();
+
+        //assert
+        assertEquals(4, testPlayer.getCurrPosition());
+
+        // tear down
+        Player.genny = (RandomNumberGeneratorInterface) new RandomNumberGenerator();
+    }
+
+    @Test
+    void testDefaultPlayerStateDoublesGivesTwoTurns(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        Player.genny = new RandomNumberGeneratorMock(new ArrayList<>(Arrays.asList(6,6,1,2)));
+
+        //act
+        testPlayer.doTurn();
+
+        //assert
+        assertEquals(15, testPlayer.getCurrPosition());
+
+        // tear down
+        Player.genny = (RandomNumberGeneratorInterface) new RandomNumberGenerator();
+    }
+
+    @Test
+    void testDefaultPlayerStateTriplesThrowPlayerInJail(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        Player.genny = new RandomNumberGeneratorMock(new ArrayList<>(Arrays.asList(6,6,1,1,2,2)));
+
+        //act
+        testPlayer.doTurn();
+
+        //assert
+        assertEquals(10, testPlayer.getCurrPosition());
+        assertInstanceOf(jailPlayerState.class, testPlayer.getState());
+
+        // tear down
+        Player.genny = (RandomNumberGeneratorInterface) new RandomNumberGenerator();
+    }
+
+    @Test
+    void testJailPlayerStateDoublesExitJail(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.changeState(new jailPlayerState(testPlayer));
+        Player.genny = new RandomNumberGeneratorMock(new ArrayList<>(Arrays.asList(1,1)));
+
+        //act
+        testPlayer.doTurn();
+
+        //assert
+        assertEquals(12, testPlayer.getCurrPosition());
+        assertInstanceOf(defaultPlayerState.class, testPlayer.getState());
+
+        // tear down
+        Player.genny = (RandomNumberGeneratorInterface) new RandomNumberGenerator();
+    }
+
+    @Test
+    void testJailPlayerStateThreeTurnsExitJail(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.changeState(new jailPlayerState(testPlayer));
+        Player.genny = new RandomNumberGeneratorMock(new ArrayList<>(Arrays.asList(1,2,2,3,3,1)));
+
+        //act
+        testPlayer.doTurn();
+        testPlayer.doTurn();
+        testPlayer.doTurn();
+
+        //assert
+        assertEquals(14, testPlayer.getCurrPosition());
+        assertInstanceOf(defaultPlayerState.class, testPlayer.getState());
+
+        // tear down
+        Player.genny = (RandomNumberGeneratorInterface) new RandomNumberGenerator();
+    }
+
+    @Test
+    void testJailPlayerStateGoojCardImmediatelyIsUsed(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.addGoojCards(new getOutJailAction());
+        testPlayer.changeState(new jailPlayerState(testPlayer));
+
+        //act
+        testPlayer.doTurn();
+
+        //assert
+        assertEquals(10, testPlayer.getCurrPosition());
+        assertInstanceOf(defaultPlayerState.class, testPlayer.getState());
+
+        // tear down
+        Player.genny = (RandomNumberGeneratorInterface) new RandomNumberGenerator();
+    }
 }

@@ -8,7 +8,7 @@ public class jailPlayerState implements PlayerStateBehaviour {
     public jailPlayerState(Player Player) {
         this.player = Player;
         this.turnsInJail = 0;
-        player.setCurrPosition(9);
+        player.setCurrPosition(10);
     }
 
     public void doTurn(){
@@ -21,15 +21,15 @@ public class jailPlayerState implements PlayerStateBehaviour {
         }
 
         // Roll dice
-        int diceRoll1 = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-        int diceRoll2 = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-        if (diceRoll1 == diceRoll2 || turnsInJail==3){
+        int diceRoll1 = player.rollDice();
+        int diceRoll2 = player.rollDice();
+        if (diceRoll1 == diceRoll2 || turnsInJail==2){
             // gooj!
             player.movePlayer(diceRoll1 + diceRoll2);
-
+            player.changeState(new defaultPlayerState(player));
+            player.handlePlayerLanding();
         } else{
             turnsInJail+=1;
         }
-        player.handlePlayerLanding();
     }
 }

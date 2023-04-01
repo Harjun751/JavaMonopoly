@@ -12,7 +12,7 @@ class TitleDeedTest {
     @Test
     void testBuyHouseFailsForNonColorSet() {
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
         TitleDeed bidadari = (TitleDeed) board.getBoardSpace(8);
         TitleDeed sengkang = (TitleDeed) board.getBoardSpace(6);
@@ -30,7 +30,7 @@ class TitleDeedTest {
     @Test
     void testBuyHouseFailsForNonEqualBuilding() {
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
         TitleDeed bidadari = (TitleDeed) board.getBoardSpace(8);
         TitleDeed sengkang = (TitleDeed) board.getBoardSpace(6);
@@ -50,7 +50,7 @@ class TitleDeedTest {
     @Test
     void testBuyHouseAddsOneHouse() {
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
 
 
@@ -71,7 +71,7 @@ class TitleDeedTest {
     @Test
     void testBuyHouseBuysEvenly() {
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
 
 
@@ -95,7 +95,7 @@ class TitleDeedTest {
     @Test
     void testBuyHouseDeductsMoney() {
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
         TitleDeed bidadari = (TitleDeed) board.getBoardSpace(8);
         TitleDeed sengkang = (TitleDeed) board.getBoardSpace(6);
@@ -114,7 +114,7 @@ class TitleDeedTest {
     @Test
     void testBuyHouseBuysHotel() {
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
         // Money is not a problem
         testPlayer.setCash(1000000000);
@@ -142,7 +142,7 @@ class TitleDeedTest {
     @Test
     void testBuyHouseNoHotelOnFourthHouse() {
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
         // Money is not a problem
         testPlayer.setCash(1000000000);
@@ -170,7 +170,7 @@ class TitleDeedTest {
     @Test
     void testGetRentReturnsCorrectSingleRent(){
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
 
         // act
@@ -184,7 +184,7 @@ class TitleDeedTest {
     @Test
     void testGetRentReturnsCorrectFullSetRent(){
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
         TitleDeed sengkang = (TitleDeed) board.getBoardSpace(6);
         TitleDeed bidadari = (TitleDeed) board.getBoardSpace(8);
@@ -202,7 +202,7 @@ class TitleDeedTest {
     @Test
     void testGetRentReturnsCorrectOneHouseRent(){
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
         TitleDeed sengkang = (TitleDeed) board.getBoardSpace(6);
         TitleDeed bidadari = (TitleDeed) board.getBoardSpace(8);
@@ -221,7 +221,7 @@ class TitleDeedTest {
     @Test
     void testGetRentReturnsCorrectHotelRent(){
         // arrange
-        Board board = BoardBootstrapper.getBoard(1);
+        Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
         TitleDeed sengkang = (TitleDeed) board.getBoardSpace(6);
         TitleDeed bidadari = (TitleDeed) board.getBoardSpace(8);

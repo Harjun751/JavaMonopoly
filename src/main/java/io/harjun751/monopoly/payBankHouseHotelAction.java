@@ -10,12 +10,12 @@ public class payBankHouseHotelAction extends SpecialActionCard{
         for (PropertySpace property : cardDrawer.getProperties()) {
             if (property instanceof TitleDeed){
                 TitleDeed titleDeed = (TitleDeed)property;
-                toPay += (titleDeed.houses.size()*perHouse);
                 if (titleDeed.hotel != null){
                     toPay += perHotel;
+                } else {
+                    toPay += (titleDeed.houses.size()*perHouse);
                 }
             }
-            
         }
 
         cardDrawer.pay(toPay, cardDrawer.getBoard().getBanker());
