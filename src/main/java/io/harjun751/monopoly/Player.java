@@ -210,7 +210,14 @@ public class Player {
         for (PropertySpace property : properties) {
             property.setOwner(null);
         }
-        this.board.removeBankruptPlayer(this);
+        if (this.id==1000){
+            System.out.println("Something's probably going wrong. Stopping Iteration");
+            for (Player player : board.getPlayers()){
+                board.removeBankruptPlayer(player);
+            }
+        } else {
+            this.board.removeBankruptPlayer(this);
+        }
     }
 
 

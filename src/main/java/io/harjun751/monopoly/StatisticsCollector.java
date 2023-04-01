@@ -1,5 +1,7 @@
 package io.harjun751.monopoly;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class StatisticsCollector implements Subscriber{
@@ -16,8 +18,45 @@ public class StatisticsCollector implements Subscriber{
     public void update(Player player){}
 
     public void export(){
-        System.out.println(landedMap);
-        System.out.println(rentCollectedMap);
+        String text1 = "position, name, landings\n";
+        String text2 = "position, name, rent collected\n";
+        Board referenceBoard = BoardBootstrapper.getBoard(1);
+        for (Integer key : landedMap.keySet()){
+            BoardSpace space = referenceBoard.getBoardSpace(key);
+            String name = "";
+            if (space==null){
+                name = "free parkin";
+            }
+            else{
+                name = space.name;
+            }
+            text1 = text1 + (key + ", " + name + ", " + landedMap.get(key)+"\n");
+        }
+        for (Integer key : landedMap.keySet()){
+            BoardSpace space = referenceBoard.getBoardSpace(key);
+            String name = "";
+            if (space==null){
+                name = "free parkin";
+            }
+            else{
+                name = space.name;
+            }
+            text2 = text2 + (key + ", " + name + ", " + rentCollectedMap.get(key)+"\n");
+        }
+        System.out.println(text1);
+        System.out.println(text2);
+        try {
+            FileWriter myWriter = new FileWriter("landedmap.csv");
+            myWriter.write(text1);
+            myWriter.close();
+            FileWriter myWriter2 = new FileWriter("rentmap.csv");
+            myWriter2.write(text2);
+            myWriter2.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
     public static StatisticsCollector getInstance(){
         if (instance==null){

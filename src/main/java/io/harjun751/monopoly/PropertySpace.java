@@ -8,7 +8,7 @@ public abstract class PropertySpace extends BoardSpace{
     private Player owner;
 
     public PropertySpace(int Position, String Name, double BuyCost, double MortgagePrice) {
-        super(Position);
+        super(Position,Name);
         position = Position;
         name = Name;
         buyCost = BuyCost;

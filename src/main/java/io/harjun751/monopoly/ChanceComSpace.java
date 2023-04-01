@@ -4,7 +4,7 @@ public class ChanceComSpace extends BoardSpace {
     private boolean isChanceSpace;
 
     public ChanceComSpace(int Position, boolean IsChanceSpace) {
-        super(Position);
+        super(Position, "ChanceCom Space");
         position = Position;
         isChanceSpace = IsChanceSpace;
     }

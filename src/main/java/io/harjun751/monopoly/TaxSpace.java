@@ -3,8 +3,9 @@ public class TaxSpace extends BoardSpace {
     public int position;
     public double value;
 
+
     public TaxSpace(int Position, double Value) {
-        super(Position);
+        super(Position, "Tax Space");
         position = Position;
         value = Value;
     }

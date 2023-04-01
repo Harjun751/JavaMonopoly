@@ -55,6 +55,7 @@ final class BoardBootstrapper {
             board.addPlayers(player);
         }
         Player banker = new Player(1000,1000000000);
+        banker.setBoard(board);
         board.setBanker(banker);
 
         // Initialize all boardSpaces
@@ -71,32 +72,32 @@ final class BoardBootstrapper {
         spaces.add(new TitleDeed(1, "Joo Koon",60, 0, 1, 0, 50, 0, 0, 0, 0, 0));
         spaces.add(new TitleDeed(3, "Bukit Gombak",60, 0, 1, 0, 60, 0, 0, 0, 0, 0));
         spaces.add(new Railway(5,"Punggol MRT",200,0));
-        spaces.add(new TitleDeed(6, "Sengkang",100, 100, 2, 100, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(8, "Bidadari",100, 100, 2, 100, 1500, 300, 0, 0, 0, 500));
-        spaces.add(new TitleDeed(9, "Serangoon",120, 100, 2, 100, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(11, "Woodlands",140, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(13, "Ang Mo Kio",140, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(14, "Toa Payoh",160, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(6, "Sengkang",100, 100, 2, 100, 300, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(8, "Bidadari",100, 100, 2, 100, 300, 300, 0, 0, 0, 500));
+        spaces.add(new TitleDeed(9, "Serangoon",120, 100, 2, 100, 320, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(11, "Woodlands",140, 0, 3, 0, 320, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(13, "Ang Mo Kio",140, 0, 3, 0, 320, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(14, "Toa Payoh",160, 0, 3, 0, 340, 0, 0, 0, 0, 0));
         spaces.add(new Utilities(12, "Electric Company", 150, 0));
         spaces.add(new Railway(15,"Bishan MRT",200,0));
-        spaces.add(new TitleDeed(16, "Tanjong Katong",180, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(18, "East Coast Road",180, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(19, "Bayshore Road",200, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(21, "Queenstown",220, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(23, "Tiong Bahru",220, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(24, "Tanjong Pagar",240, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(16, "Tanjong Katong",180, 0, 3, 0, 340, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(18, "East Coast Road",180, 0, 3, 0, 340, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(19, "Bayshore Road",200, 0, 3, 0, 360, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(21, "Queenstown",220, 0, 3, 0, 360, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(23, "Tiong Bahru",220, 0, 3, 0, 360, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(24, "Tanjong Pagar",240, 0, 3, 0, 380, 0, 0, 0, 0, 0));
         spaces.add(new Railway(25,"Botanic Garden MRT",200,0));
-        spaces.add(new TitleDeed(26, "Novena",260, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(27, "Holland Road",260, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(29, "Bukit Timah",280, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(26, "Novena",260, 0, 3, 0, 380, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(27, "Holland Road",260, 0, 3, 0, 380, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(29, "Bukit Timah",280, 0, 3, 0, 400, 0, 0, 0, 0, 0));
         spaces.add(new Utilities(28, "Water Works", 150, 0));
         spaces.add(new GoJailSpace(30));
-        spaces.add(new TitleDeed(31, "River Valley Road",300, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(32, "Orchard Road",300, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(34, "Oxley Road",320, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(31, "River Valley Road",300, 0, 3, 0, 400, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(32, "Orchard Road",300, 0, 3, 0, 400, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(34, "Oxley Road",320, 0, 3, 0, 420, 0, 0, 0, 0, 0));
         spaces.add(new Railway(35,"City Hall MRT",200,0));
-        spaces.add(new TitleDeed(37, "Marina Bay",350, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
-        spaces.add(new TitleDeed(39, "Sentosa Cove",400, 0, 3, 0, 1500, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(37, "Marina Bay",350, 0, 3, 0, 500, 0, 0, 0, 0, 0));
+        spaces.add(new TitleDeed(39, "Sentosa Cove",400, 0, 3, 0, 600, 0, 0, 0, 0, 0));
         board.setBoardSpaces(spaces);
         
 
