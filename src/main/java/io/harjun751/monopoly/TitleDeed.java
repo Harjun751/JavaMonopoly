@@ -44,7 +44,7 @@ public class TitleDeed extends PropertySpace{
 
         for (TitleDeed property : propertyColorSet){
             if (property.getOwner() != this.getOwner()){
-                System.out.println("Oi mate you don't have a loicense for that (No color set)");
+//                System.out.println("Oi mate you don't have a loicense for that (No color set)");
                 return;
             }
             if (property.houses.size() <= smallestHouseAmnt){
@@ -54,7 +54,7 @@ public class TitleDeed extends PropertySpace{
 
         // Check if owner is building evenly
         if (this.houses.size()>smallestHouseAmnt){
-            System.out.println("Oi mate you don't have a loicense for that (Not building evenly)");
+//            System.out.println("Oi mate you don't have a loicense for that (Not building evenly)");
             return;
         }
 
@@ -67,7 +67,7 @@ public class TitleDeed extends PropertySpace{
             this.hotel = new Hotel();
         }
 
-        System.out.println("Congratulations mate your building has been approved by the government.");
+//        System.out.println("Congratulations mate your building has been approved by the government.");
     }
 
     public double getRent(){

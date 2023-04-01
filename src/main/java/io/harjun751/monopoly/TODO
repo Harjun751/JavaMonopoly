@@ -1,6 +1,4 @@
-1. Refactor player class
-2. Write tests
-3. Implement "Advance to nearest MRT station" card
-4. implement logger
-5. unit tests
-7. Reimplement way the gameboard is obtained - it's all over the place
+1. Write tests
+2. Implement "Advance to nearest MRT station" card
+3. Find out why some runs go on infinitely
+4. (low importance) Reimplement way the gameboard is obtained - it's all over the place

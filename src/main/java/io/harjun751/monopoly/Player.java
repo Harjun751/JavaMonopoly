@@ -1,6 +1,9 @@
 package io.harjun751.monopoly;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Flow;
 import java.util.stream.*;
 import java.util.Map;
 
@@ -13,14 +16,7 @@ public class Player {
     private ArrayList<getOutJailAction> goojCards;
     private PlayerStateBehaviour state;
     private int diceroll;
-
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
+    private ArrayList<Subscriber> subscribers;
 
     private Board board;
 
@@ -32,6 +28,8 @@ public class Player {
         this.properties = new ArrayList<PropertySpace>();
         this.goojCards = new ArrayList<getOutJailAction>();
         this.state = new defaultPlayerState(this);
+        this.subscribers = new ArrayList<Subscriber>();
+        subscribers.add(StatisticsCollector.getInstance());
     }
 
     public Player(int ID, double Cash){
@@ -68,7 +66,8 @@ public class Player {
 
     public void handlePlayerLanding(){
         BoardSpace space = this.board.getBoardSpace(this.getCurrPosition());
-        System.out.println("i landed on " + this.getCurrPosition());
+//        System.out.println("i landed on " + this.getCurrPosition());
+        this.notifySubscribers(StatisticType.LANDED, this);
         if (space instanceof PropertySpace){
             PropertySpace propertyspace = (PropertySpace) space;
             if (propertyspace.isMortgaged()){
@@ -76,15 +75,20 @@ public class Player {
                 return;
             }
             if (propertyspace.getOwner()!=null && propertyspace.getOwner()!=this){
+                // pay rent
                 double rent = propertyspace.getRent();
                 if (propertyspace instanceof Utilities){
                     rent = rent * diceroll;
                 }
+                HashMap context = new HashMap();
+                context.put("pos", this.getCurrPosition());
+                context.put("rent", rent);
+                this.notifySubscribers(StatisticType.RENTPAID, context);
                 this.pay(rent, propertyspace.getOwner());
             } else {
                 if (this.getCash() >= propertyspace.getBuyCost()){
                     this.pay(propertyspace.getBuyCost(), this.board.getBanker());
-                    System.out.println("i bought popety");
+//                    System.out.println("i bought popety");
                     propertyspace.setOwner(this);
                 }
             }
@@ -257,5 +261,18 @@ public class Player {
 
     public void setDiceroll(int diceroll) {
         this.diceroll = diceroll;
+    }
+
+    public Board getBoard() { return board; }
+
+    public void setBoard(Board board) { this.board = board; }
+
+    public void subscribe(Subscriber subscriber) { this.subscribers.add(subscriber); }
+    public void unsubscribe(Subscriber subscriber) { this.subscribers.remove(subscriber); }
+
+    public void notifySubscribers(StatisticType type, Object context){
+        for (Subscriber sub : subscribers){
+            sub.update(type,context);
+        }
     }
 }

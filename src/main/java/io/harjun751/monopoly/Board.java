@@ -43,12 +43,12 @@ public class Board {
     public void removeBankruptPlayer(Player player){
         this.players.remove(player);
         if (players.size()==1){
-            System.out.println("Game ended! 1 player remaining!");
+//            System.out.println("Game ended! 1 player remaining!");
             Player winner = players.get(0);
-            System.out.println("Player won with $"+winner.getCash()+" and "+winner.getProperties().size()+" properties");
+//            System.out.println("Player won with $"+winner.getCash()+" and "+winner.getProperties().size()+" properties");
             this.players.remove(winner);
         }
-        System.out.println("Bankrupted...");
+//        System.out.println("Bankrupted...");
     }
 
 
