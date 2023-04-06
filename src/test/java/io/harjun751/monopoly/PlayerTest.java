@@ -101,15 +101,16 @@ class PlayerTest {
         bidadari.setOwner(testPayer);
         sengkang.setOwner(testPayer);
         serangoon.setOwner(testPayer);
-        // player cash = 1500 - 100 = 1400
+        // player cash = 1500 - 50 = 1450
         bidadari.buyHouse();
+        // house sell back = 50/2 = 25
 
         //act
-        testPayer.pay(1450,testRecipient);
+        testPayer.pay(1475,testRecipient);
 
         //assert
         assertEquals(0,testPayer.getCash());
-        assertEquals(2950,testRecipient.getCash());
+        assertEquals(2975,testRecipient.getCash());
         assertEquals(0,bidadari.houses.size());
     }
 
@@ -127,15 +128,18 @@ class PlayerTest {
         bidadari.setOwner(testPayer);
         sengkang.setOwner(testPayer);
         serangoon.setOwner(testPayer);
-        // player cash = 1500 - 100 = 1400
+        // player cash = 1500 - 50 = 1450
         bidadari.buyHouse();
+        // After selling house = 1450+25 = 1475
+        // Mortgage value = 54+54+54 = 162
+        // Total asset worth = 1450+25+162 = 1637
 
         //act
-        testPayer.pay(1750,testRecipient);
+        testPayer.pay(1637,testRecipient);
 
         //assert - check if i should have this many asserts, possibly (probably) bad test design
         assertEquals(0,testPayer.getCash());
-        assertEquals(1500+1750,testRecipient.getCash());
+        assertEquals(1500+1637,testRecipient.getCash());
         assertEquals(0,bidadari.houses.size());
         assertEquals(true,bidadari.isMortgaged());
         assertEquals(true,sengkang.isMortgaged());
@@ -172,7 +176,7 @@ class PlayerTest {
         bidadari.setOwner(testPlayer);
         sengkang.setOwner(testPlayer);
         serangoon.setOwner(testPlayer);
-        // each house costs 100 (for now) so 100*3*4 + 100 = 1300 total cost for house + hotel
+        // each house costs 50 so 50*3*4 + 50 = 650 total cost for house + hotel
         for (int i=0;i<4;i++){
             for (TitleDeed deed : Arrays.asList(bidadari,sengkang,serangoon)){
                 deed.buyHouse();
@@ -180,10 +184,11 @@ class PlayerTest {
         }
         bidadari.buyHouse();
 
-        // 200 in bank
+        // 1500-650 = 850 in bank
 
         // act
-        testPlayer.sellHousesEvenly(Arrays.asList(bidadari,sengkang,serangoon), 250);
+        // Make player sell off exactly one house. 850 + 25 (house sell value) = 875
+        testPlayer.sellHousesEvenly(Arrays.asList(bidadari,sengkang,serangoon), 875);
 
         assertEquals(null, bidadari.hotel);
         assertEquals(4, bidadari.houses.size());
@@ -203,7 +208,7 @@ class PlayerTest {
         bidadari.setOwner(testPlayer);
         sengkang.setOwner(testPlayer);
         serangoon.setOwner(testPlayer);
-        // each house costs 100 (for now) so 100*3*4 + 100*2 = 1400 total cost for house + hotel
+        // each house costs 50 (for now) so 50*3*4 + 50*2 = 700 total cost for house + hotel
         for (int i=0;i<4;i++){
             for (TitleDeed deed : Arrays.asList(bidadari,sengkang,serangoon)){
                 deed.buyHouse();
@@ -212,10 +217,11 @@ class PlayerTest {
         bidadari.buyHouse();
         serangoon.buyHouse();
 
-        // 100 in bank
+        // 800 in bank
 
         // act
-        testPlayer.sellHousesEvenly(Arrays.asList(bidadari,sengkang,serangoon), 200);
+        // Make player sell off two houses. 800 + 25*2 (house sell value) = 850
+        testPlayer.sellHousesEvenly(Arrays.asList(bidadari,sengkang,serangoon), 850);
 
         assertEquals(null, bidadari.hotel);
         assertEquals(null, serangoon.hotel);
@@ -236,17 +242,17 @@ class PlayerTest {
         bidadari.setOwner(testPlayer);
         sengkang.setOwner(testPlayer);
         serangoon.setOwner(testPlayer);
-        // each house costs 100 (for now) so 100*3*4 = 1200 total cost for house + hotel
+        // each house costs 50 (for now) so 50*3*4 = 600 total cost for house
         for (int i=0;i<4;i++){
             for (TitleDeed deed : Arrays.asList(bidadari,sengkang,serangoon)){
                 deed.buyHouse();
             }
         }
 
-        // 300 in bank
-        // sells at half price so 100/2 * 4 = 200
+        // 900 in bank
         // act
-        testPlayer.sellHousesEvenly(Arrays.asList(bidadari,sengkang,serangoon), 500);
+        // Make player sell off two houses. 900 + 25*4 (house sell value) = 1000
+        testPlayer.sellHousesEvenly(Arrays.asList(bidadari,sengkang,serangoon), 1000);
 
         assertEquals(2, bidadari.houses.size());
         assertEquals(3, serangoon.houses.size());
@@ -279,11 +285,12 @@ class PlayerTest {
         space.setOwner(testRecipient);
 
         //act
+        //rent is 2
         testPayer.handlePlayerLanding();
 
         //assert
-        assertEquals(1440, testPayer.getCash());
-        assertEquals(1560, testRecipient.getCash());
+        assertEquals(1498, testPayer.getCash());
+        assertEquals(1502, testRecipient.getCash());
     }
 
     @Test
@@ -291,7 +298,7 @@ class PlayerTest {
         //arrange
         Board board = TestBoardBootstrapper.getBoard(1);
         Player testPlayer = board.getPlayers().get(0);
-        testPlayer.setCurrPosition(38);
+        testPlayer.setCurrPosition(4);
 
 
         //act

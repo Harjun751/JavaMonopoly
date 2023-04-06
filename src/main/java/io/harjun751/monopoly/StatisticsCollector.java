@@ -66,8 +66,8 @@ public class StatisticsCollector implements Subscriber{
         return instance;
     }
 
-    public void update(StatisticType type, Object context){
-        if (type == StatisticType.LANDED){
+    public void update(EventType type, Object context){
+        if (type == EventType.LANDED){
             Player player = (Player) context;
             int landedAt = player.getCurrPosition();
             if (landedMap.containsKey(landedAt)){
@@ -76,12 +76,13 @@ public class StatisticsCollector implements Subscriber{
             } else {
                 landedMap.put(landedAt, 1);
             }
-        } else if (type == StatisticType.RENTPAID){
-            HashMap data = (HashMap) context;
+        } else if (type == EventType.RENTPAID){
+            HashMap<String, Object> data = (HashMap <String, Object>) context;
             double rent = (double) data.get("rent");
             int position = (int) data.get("pos");
             if (rentCollectedMap.containsKey(position)){
                 double rentValue = rentCollectedMap.get(position);
+                // Add current rent collected to the total value of collected rent at that property
                 rentCollectedMap.put(position, rent+rentValue);
             } else {
                 rentCollectedMap.put(position, rent);

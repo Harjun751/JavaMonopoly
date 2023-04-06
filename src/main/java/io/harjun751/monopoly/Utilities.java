@@ -3,8 +3,8 @@ import java.util.stream.*;
 import java.util.List;
 
 public class Utilities extends PropertySpace{
-    public Utilities(int Position, String Name, double BuyCost, double MortgagePrice) {
-        super(Position, Name, BuyCost, MortgagePrice);
+    public Utilities(int Position, String Name, double BuyCost, double MortgagePrice, double UnmortgagePrice) {
+        super(Position, Name, BuyCost, MortgagePrice, UnmortgagePrice);
     }
     public double getRent(){
         List<Utilities> utilities = this.getOwner().getProperties().stream()

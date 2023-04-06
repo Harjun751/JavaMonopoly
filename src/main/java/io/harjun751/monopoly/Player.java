@@ -1,8 +1,6 @@
 package io.harjun751.monopoly;
 
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.concurrent.Flow;
 import java.util.stream.*;
 
 
@@ -30,6 +28,7 @@ public class Player {
         this.state = new defaultPlayerState(this);
         this.subscribers = new ArrayList<Subscriber>();
         subscribers.add(StatisticsCollector.getInstance());
+        subscribers.add(EventLogger.getInstance());
     }
 
     public int rollDice(){
@@ -70,8 +69,7 @@ public class Player {
 
     public void handlePlayerLanding() {
         BoardSpace space = this.board.getBoardSpace(this.getCurrPosition());
-//        System.out.println("i landed on " + this.getCurrPosition());
-        this.notifySubscribers(StatisticType.LANDED, this);
+        this.notifySubscribers(EventType.LANDED, this);
         if (space instanceof PropertySpace) {
             PropertySpace propertyspace = (PropertySpace) space;
             if (propertyspace.isMortgaged()) {
@@ -87,21 +85,25 @@ public class Player {
                 HashMap<String, Object> context = new HashMap<String, Object>();
                 context.put("pos", this.getCurrPosition());
                 context.put("rent", rent);
-                this.notifySubscribers(StatisticType.RENTPAID, context);
+                context.put("player", this.id);
+                context.put("cash", this.cash);
+                this.notifySubscribers(EventType.RENTPAID, context);
                 this.pay(rent, propertyspace.getOwner());
             } else {
                 if (propertyspace.getOwner()==null && this.getCash() >= propertyspace.getBuyCost()) {
                     this.pay(propertyspace.getBuyCost(), this.board.getBanker());
-//                    System.out.println("i bought popety");
                     propertyspace.setOwner(this);
-                    if (this.properties.size()>1000){
-                        System.out.println("wat");
-                    }
+                    HashMap<String, Object> context = new HashMap<String, Object>();
+                    context.put("cost", propertyspace.getBuyCost());
+                    context.put("player", this.id);
+                    context.put("cash", this.cash);
+                    this.notifySubscribers(EventType.BOUGHTPROPERTY, context);
                 }
             }
         } else if (space instanceof TaxSpace) {
             TaxSpace tax = (TaxSpace) space;
             tax.payTax(this);
+            this.notifySubscribers(EventType.GENERIC, this.id+" paid tax!\n");
         } else if (space instanceof ChanceComSpace) {
             ChanceComSpace ccSpace = (ChanceComSpace) space;
             SpecialActionCard card = null;
@@ -118,8 +120,12 @@ public class Player {
                 }
             }
             card.doAction(this);
+            this.notifySubscribers(EventType.GENERIC, this.id+" drew a chance/coms card!\n");
         } else if (space instanceof GoJailSpace) {
             this.changeState(new jailPlayerState(this));
+            this.notifySubscribers(EventType.GENERIC, this.id+" went to jail!\n");
+        } else {
+            this.notifySubscribers(EventType.GENERIC, this.id+" landed on nothing. Position: "+ this.getCurrPosition() +"\n");
         }
     }
 
@@ -294,7 +300,7 @@ public class Player {
         this.subscribers.remove(subscriber);
     }
 
-    public void notifySubscribers(StatisticType type, Object context) {
+    public void notifySubscribers(EventType type, Object context) {
         for (Subscriber sub : subscribers) {
             sub.update(type, context);
         }

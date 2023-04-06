@@ -16,8 +16,8 @@ public class TitleDeed extends PropertySpace{
     public ArrayList<House> houses;
     public Hotel hotel;
 
-    public TitleDeed(int Position, String Name, double BuyCost, double MortgagePrice, int Color,double HouseCost,double Rent, double Rent1House, double Rent2House, double Rent3House, double Rent4House, double RentHotel) {
-        super(Position, Name, BuyCost, MortgagePrice);
+    public TitleDeed(int Position, int Color, String Name, double BuyCost,double Rent, double Rent1House, double Rent2House, double Rent3House, double Rent4House, double RentHotel,double HouseCost,double MortgagePrice, double UnmortgagePrice) {
+        super(Position, Name, BuyCost, MortgagePrice, UnmortgagePrice);
         houseCost = HouseCost;
         rent = Rent;
         color = Color;

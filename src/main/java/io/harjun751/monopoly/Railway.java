@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Railway extends PropertySpace{
-    public Railway(int Position, String Name, double BuyCost, double MortgagePrice) {
-        super(Position, Name, BuyCost, MortgagePrice);
+    public Railway(int Position, String Name, double BuyCost, double MortgagePrice, double UnmortgagePrice) {
+        super(Position, Name, BuyCost, MortgagePrice, UnmortgagePrice);
     }
 
     public double getRent(){

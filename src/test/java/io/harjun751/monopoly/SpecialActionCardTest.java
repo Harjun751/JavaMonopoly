@@ -47,11 +47,12 @@ class SpecialActionCardTest {
         SpecialActionCard advAction = new advanceAction(true,6);
 
         //act
+        // rent is 6
         advAction.doAction(testPlayer);
 
         //assert
-        assertEquals(1300, testPlayer.getCash());
-        assertEquals(1700, testOwner.getCash());
+        assertEquals(1488, testPlayer.getCash());
+        assertEquals(1512, testOwner.getCash());
     }
 
     @Test

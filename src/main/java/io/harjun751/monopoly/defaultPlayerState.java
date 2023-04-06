@@ -19,6 +19,7 @@ public class defaultPlayerState implements PlayerStateBehaviour{
             player.setDiceroll(diceRoll1 + diceRoll2);
             player.handlePlayerLanding();
             if (diceRoll1 == diceRoll2){
+                this.player.notifySubscribers(EventType.GENERIC, "Doubles! \n");
                 isMyTurn = true;
                 numberOfDouble++;
                 if (numberOfDouble>=3){

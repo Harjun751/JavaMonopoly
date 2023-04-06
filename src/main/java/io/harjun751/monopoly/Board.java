@@ -12,6 +12,7 @@ public class Board {
     private ArrayList<BoardSpace> boardSpaces;
     private CopyOnWriteArrayList<Player> players;
     private Player banker;
+    private int turns=0;
 
     public Board() {
         chanceCards = new ArrayList<SpecialActionCard> ();
@@ -25,6 +26,14 @@ public class Board {
         while (players.size()!=0){
             for (Player player : players){
                 player.doTurn();
+                turns+=1;
+                if (turns>1000){
+                    // end game by removing all players
+                    for (Player remove : players){
+                        this.removeBankruptPlayer(remove);
+                    }
+                    break;
+                }
             }
         }
     }

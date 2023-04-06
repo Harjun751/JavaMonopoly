@@ -4,15 +4,18 @@ public abstract class PropertySpace extends BoardSpace{
     private String name;
     private double buyCost;
     private double mortgagePrice;
+    private double unmortgagePrice;
     private boolean isMortgaged;
     private Player owner;
 
-    public PropertySpace(int Position, String Name, double BuyCost, double MortgagePrice) {
+
+    public PropertySpace(int Position, String Name, double BuyCost, double MortgagePrice, double UnmortgagePrice) {
         super(Position,Name);
         position = Position;
         name = Name;
         buyCost = BuyCost;
         mortgagePrice = MortgagePrice;
+        unmortgagePrice = UnmortgagePrice;
         isMortgaged = false;
         owner = null;
     }
@@ -27,6 +30,14 @@ public abstract class PropertySpace extends BoardSpace{
         if (!this.isMortgaged){
             this.isMortgaged = true;
             this.owner.getBoard().getBanker().pay(this.mortgagePrice, this.owner);
+        }
+    }
+
+    public void unmortgage(){
+        if (this.isMortgaged){
+            if (this.owner.getCash() >= this.unmortgagePrice){
+                this.owner.pay(this.unmortgagePrice, this.owner.getBoard().getBanker());
+            }
         }
     }
 

@@ -178,7 +178,7 @@ class TitleDeedTest {
         bidadari.setOwner(testPlayer);
 
         //assert
-        assertEquals(100, bidadari.getRent());
+        assertEquals(6, bidadari.getRent());
     }
 
     @Test
@@ -196,7 +196,7 @@ class TitleDeedTest {
         serangoon.setOwner(testPlayer);
 
         //assert
-        assertEquals(100*2, bidadari.getRent());
+        assertEquals(6*2, bidadari.getRent());
     }
 
     @Test
@@ -215,7 +215,7 @@ class TitleDeedTest {
         bidadari.buyHouse();
 
         //assert
-        assertEquals(300, bidadari.getRent());
+        assertEquals(30, bidadari.getRent());
     }
 
     @Test
@@ -239,7 +239,7 @@ class TitleDeedTest {
         bidadari.buyHouse();
 
         //assert
-        assertEquals(500, bidadari.getRent());
+        assertEquals(550, bidadari.getRent());
     }
 
 }
