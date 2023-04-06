@@ -1,6 +1,6 @@
 # TODO
 1. Gradle build settings
-2. Github actions for push to main testing
+2. Github actions for push to main testing - add .bat file releases from gradle builds
 3. Replace the images in the readme. Disgusting.
 4. Do more statistics on the data. Standard deviation sounds cool.
 5. Make the repo public when previous things are done.
