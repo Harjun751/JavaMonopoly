@@ -3,7 +3,6 @@ plugins {
 }
 
 group = 'io.harjun751.monopoly'
-version = '0.1'
 
 repositories {
     mavenCentral()
