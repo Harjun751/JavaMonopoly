@@ -34,9 +34,4 @@ jobs:
       if: always()
       with:
         github_token: ${{secrets.GITHUB_TOKEN}}
-        files: |
-          test-results/test/TEST-io.harjun751.monopoly.BoardTest.xml
-          test-results/test/TEST-io.harjun751.monopoly.PlayerTest.xml
-          test-results/test/TEST-io.harjun751.monopoly.PropertySpaceTest.xml
-          test-results/test/TEST-io.harjun751.monopoly.SpecialActionCardTest.xml
-          test-results/test/TEST-io.harjun751.monopoly.TitleDeedTest.xml
+        files: build/test-results/test/*.xml
