@@ -36,8 +36,8 @@ jobs:
       with:
         github_token: ${{secrets.GITHUB_TOKEN}}
         files: |
-          /build/test-results/test/TEST-io.harjun751.monopoly.BoardTest.xml
-          /build/test-results/test/TEST-io.harjun751.monopoly.PlayerTest.xml
-          /build/test-results/test/TEST-io.harjun751.monopoly.PropertySpaceTest.xml
-          /build/test-results/test/TEST-io.harjun751.monopoly.SpecialActionCardTest.xml
-          /build/test-results/test/TEST-io.harjun751.monopoly.TitleDeedTest.xml
+          test-results/test/TEST-io.harjun751.monopoly.BoardTest.xml
+          test-results/test/TEST-io.harjun751.monopoly.PlayerTest.xml
+          test-results/test/TEST-io.harjun751.monopoly.PropertySpaceTest.xml
+          test-results/test/TEST-io.harjun751.monopoly.SpecialActionCardTest.xml
+          test-results/test/TEST-io.harjun751.monopoly.TitleDeedTest.xml
