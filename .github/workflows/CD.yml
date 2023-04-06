@@ -41,6 +41,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
         artifacts: |
-          "build/distributions/JavaMonopoly.zip"
-          "build/distributions/JavaMonopoly.tar"
+          build/distributions/JavaMonopoly.zip
+          build/distributions/JavaMonopoly.tar
           
