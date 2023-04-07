@@ -1,22 +1,23 @@
 package io.harjun751.monopoly;
 
-import java.util.*;
-import java.util.stream.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class Player {
+    public static RandomNumberGeneratorInterface genny = new RandomNumberGenerator();
     private int id;
     private double cash;
     private int currPosition;
-    private ArrayList<PropertySpace> properties;
-    private ArrayList<getOutJailAction> goojCards;
-
+    private final ArrayList<PropertySpace> properties;
+    private final ArrayList<getOutJailAction> goojCards;
     private PlayerStateBehaviour state;
     private int diceroll;
     private ArrayList<Subscriber> subscribers;
-
     private Board board;
-    public static RandomNumberGeneratorInterface genny = new RandomNumberGenerator();
 
 
     public Player(int ID) {
@@ -31,10 +32,6 @@ public class Player {
         subscribers.add(EventLogger.getInstance());
     }
 
-    public int rollDice(){
-        return genny.generateRandomNumber();
-    }
-
     public Player(int ID, double Cash) {
         this.id = ID;
         this.cash = Cash;
@@ -42,6 +39,10 @@ public class Player {
         this.properties = new ArrayList<PropertySpace>();
         this.goojCards = new ArrayList<getOutJailAction>();
         this.state = new defaultPlayerState(this);
+    }
+
+    public int rollDice() {
+        return genny.generateRandomNumber();
     }
 
     public void changeState(PlayerStateBehaviour State) {
@@ -55,7 +56,6 @@ public class Player {
 
     public int movePlayer(int roll) {
         int currentPosition = this.currPosition;
-        // >38
         int finalPosition = currentPosition + roll;
         if (finalPosition > 39) {
             // pass go, collect 200
@@ -70,29 +70,34 @@ public class Player {
     public void handlePlayerLanding() {
         BoardSpace space = this.board.getBoardSpace(this.getCurrPosition());
         this.notifySubscribers(EventType.LANDED, this);
-        if (space instanceof PropertySpace) {
-            PropertySpace propertyspace = (PropertySpace) space;
+        if (space instanceof PropertySpace propertyspace) {
             if (propertyspace.isMortgaged()) {
                 // nothing to do here
                 return;
             }
             if (propertyspace.getOwner() != null && propertyspace.getOwner() != this) {
-                // pay rent
+                // if property is owned by any other player - pay rent
                 double rent = propertyspace.getRent();
                 if (propertyspace instanceof Utilities) {
+                    // Rent for utilities returns multiplier for dice roll
+                    // Calculate actual rent from dice roll
                     rent = rent * diceroll;
                 }
+                // pay rent
+                this.pay(rent, propertyspace.getOwner());
+                // publish info to subscribers (logging)
                 HashMap<String, Object> context = new HashMap<String, Object>();
                 context.put("pos", this.getCurrPosition());
                 context.put("rent", rent);
                 context.put("player", this.id);
                 context.put("cash", this.cash);
                 this.notifySubscribers(EventType.RENTPAID, context);
-                this.pay(rent, propertyspace.getOwner());
             } else {
-                if (propertyspace.getOwner()==null && this.getCash() >= propertyspace.getBuyCost()) {
+                if (propertyspace.getOwner() == null && this.getCash() >= propertyspace.getBuyCost()) {
+                    // if property has no owner and player has enough cash to buy property - buy
                     this.pay(propertyspace.getBuyCost(), this.board.getBanker());
                     propertyspace.setOwner(this);
+                    // publish info to subscribers (logging)
                     HashMap<String, Object> context = new HashMap<String, Object>();
                     context.put("cost", propertyspace.getBuyCost());
                     context.put("player", this.id);
@@ -100,14 +105,11 @@ public class Player {
                     this.notifySubscribers(EventType.BOUGHTPROPERTY, context);
                 }
             }
-        } else if (space instanceof TaxSpace) {
-            TaxSpace tax = (TaxSpace) space;
+        } else if (space instanceof TaxSpace tax) {
             tax.payTax(this);
-            this.notifySubscribers(EventType.GENERIC, this.id+" paid tax!\n");
-        } else if (space instanceof ChanceComSpace) {
-            ChanceComSpace ccSpace = (ChanceComSpace) space;
+            this.notifySubscribers(EventType.GENERIC, this.id + " paid tax!\n");
+        } else if (space instanceof ChanceComSpace ccSpace) {
             SpecialActionCard card = null;
-            // TODO: REFACTOR
             if (ccSpace.isChanceSpace()) {
                 card = this.board.getTopChanceCard();
                 if (!(card instanceof getOutJailAction)) {
@@ -120,12 +122,12 @@ public class Player {
                 }
             }
             card.doAction(this);
-            this.notifySubscribers(EventType.GENERIC, this.id+" drew a chance/coms card!\n");
+            this.notifySubscribers(EventType.GENERIC, this.id + " drew a chance/coms card!\n");
         } else if (space instanceof GoJailSpace) {
             this.changeState(new jailPlayerState(this));
-            this.notifySubscribers(EventType.GENERIC, this.id+" went to jail!\n");
+            this.notifySubscribers(EventType.GENERIC, this.id + " went to jail!\n");
         } else {
-            this.notifySubscribers(EventType.GENERIC, this.id+" landed on nothing. Position: "+ this.getCurrPosition() +"\n");
+            this.notifySubscribers(EventType.GENERIC, this.id + " landed on nothing. Position: " + this.getCurrPosition() + "\n");
         }
     }
 
@@ -134,11 +136,11 @@ public class Player {
         if (amnt < this.cash) {
             // debit from payer
             this.cash -= amnt;
-            // credit to recepient
+            // credit to recipient
             player.cash += amnt;
             return true;
         } else {
-            // oh boy.
+            // Start raising money to pay amount
             Map<Integer, List<TitleDeed>> deeds = this.properties.stream()
                     .filter(property -> property instanceof TitleDeed)
                     .map(property -> (TitleDeed) property)
@@ -148,9 +150,8 @@ public class Player {
                 List<TitleDeed> colorSet = deeds.get(key);
                 raisedEnough = sellHousesEvenly(colorSet, amnt);
                 if (raisedEnough) {
-                    // debit from payer
+                    // pay rent and return
                     this.cash -= amnt;
-                    // credit to recipient
                     player.cash += amnt;
                     return true;
                 }
@@ -166,17 +167,12 @@ public class Player {
                     return true;
                 }
             }
-
-            if (!raisedEnough) {
-                // You're bankrupt.
-                bankruptCleanup();
-                return false;
-            }
+            bankruptCleanup();
+            return false;
         }
-        return false;
     }
 
-    // Algo could probably use some cleanup
+    // Embrace the jank
     public boolean sellHousesEvenly(List<TitleDeed> colorSet, double cost) {
         for (TitleDeed deed : colorSet) {
             if (deed.hotel != null) {
@@ -190,6 +186,9 @@ public class Player {
                 }
             }
         }
+
+        // Obtain the property with the most amount of houses in the color set,
+        // and then sell the house on that property
         int maxHouses = 0;
         TitleDeed deedHouseToSell = null;
         for (TitleDeed deed : colorSet) {
@@ -198,7 +197,7 @@ public class Player {
                 maxHouses = deed.houses.size();
             }
         }
-
+        // Sell the house on the deed
         if (deedHouseToSell != null) {
             this.board.getBanker().pay(deedHouseToSell.getHouseCost() / 2, this);
             deedHouseToSell.houses.remove(0);
@@ -216,9 +215,10 @@ public class Player {
         for (PropertySpace property : properties) {
             property.setOwner(null);
         }
-        if (this.id==1000){
-            System.out.println("Something's probably going wrong. Stopping Iteration");
-            for (Player player : board.getPlayers()){
+        if (this.id == 1000) {
+            // If the banker runs out of money, game is going on for too long
+            System.out.println("Banker has run out of money. Stopping game.");
+            for (Player player : board.getPlayers()) {
                 board.removeBankruptPlayer(player);
             }
         } else {

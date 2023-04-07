@@ -1,10 +1,8 @@
 # TODO
-1. Refactor code. Disgusting.
-2. Replace the images in the readme. Disgusting.
-3. Do more statistics on the data. Standard deviation sounds cool.
-4. Implement "Advance to nearest MRT station" card
-5. Make the repo public when previous things are done.
-6. Separate gui for human-controlled game and/or visual AI spectation
+1. Replace the images in the readme. Disgusting.
+2. Do more statistics on the data. Standard deviation sounds cool.
+3. Make the repo public when previous things are done.
+4. Separate gui for human-controlled game and/or visual AI spectation
 
 # Java Monopoly
 A Java implementation of the hyper-realistic popular capitalistic boardgame-cum-bankruptcy-simulator, Monopoly.

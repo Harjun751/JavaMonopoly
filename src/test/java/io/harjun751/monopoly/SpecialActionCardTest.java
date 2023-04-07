@@ -56,6 +56,36 @@ class SpecialActionCardTest {
     }
 
     @Test
+    void testAdvanceActionMovesBackwards(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(8);
+        SpecialActionCard advAction = new advanceAction(false,-3);
+
+        //act
+        advAction.doAction(testPlayer);
+
+        //assert
+        assertEquals(5, testPlayer.getCurrPosition());
+    }
+
+    @Test
+    void testAdvanceActionMovesBackwardsPastGo(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(1);
+        SpecialActionCard advAction = new advanceAction(false,-3);
+
+        //act
+        advAction.doAction(testPlayer);
+
+        //assert
+        assertEquals(38, testPlayer.getCurrPosition());
+    }
+
+    @Test
     void testCollectBankActionGetsMoneyFromBank(){
         //arrange
         Board board = TestBoardBootstrapper.getBoard(1);
@@ -174,4 +204,174 @@ class SpecialActionCardTest {
         assertEquals(1550, testRecipient1.getCash());
         assertEquals(1550, testRecipient2.getCash());
     }
+
+    @Test
+    void testAdvanceToRailwayActionGoesToNearestRailway(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(16);
+        SpecialActionCard advAction = new advanceToRailwayAction(false);
+
+        //act
+        advAction.doAction(testPlayer);
+
+        //assert
+        assertEquals(25, testPlayer.getCurrPosition());
+    }
+
+    @Test
+    void testAdvanceToRailwayActionGoesToNearestRailwayInCompleteLoop(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(36);
+        SpecialActionCard advAction = new advanceToRailwayAction(false);
+
+        //act
+        advAction.doAction(testPlayer);
+
+        //assert
+        assertEquals(5, testPlayer.getCurrPosition());
+    }
+
+    @Test
+    void testAdvanceToRailwayActionGoesToNextRailway(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(25);
+        SpecialActionCard advAction = new advanceToRailwayAction(false);
+
+        //act
+        advAction.doAction(testPlayer);
+
+        //assert
+        assertEquals(35, testPlayer.getCurrPosition());
+    }
+
+    @Test
+    void testAdvanceToRailwayActionPaysRent(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(2);
+        Player testPlayer = board.getPlayers().get(0);
+        Player testOwner = board.getPlayers().get(1);
+        testPlayer.setCurrPosition(16);
+        SpecialActionCard advAction = new advanceToRailwayAction(false);
+        PropertySpace space = (PropertySpace) board.getBoardSpace(25);
+        space.setOwner(testOwner);
+
+        //act - player pays double 25*2=50
+        advAction.doAction(testPlayer);
+
+        //assert
+        assertEquals(25, testPlayer.getCurrPosition());
+        assertEquals(1475, testPlayer.getCash());
+    }
+
+    @Test
+    void testAdvanceToRailwayActionPaysDouble(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(2);
+        Player testPlayer = board.getPlayers().get(0);
+        Player testOwner = board.getPlayers().get(1);
+        testPlayer.setCurrPosition(16);
+        SpecialActionCard advAction = new advanceToRailwayAction(true);
+        PropertySpace space = (PropertySpace) board.getBoardSpace(25);
+        space.setOwner(testOwner);
+
+        //act - player pays double 25*2=50
+        advAction.doAction(testPlayer);
+
+        //assert
+        assertEquals(25, testPlayer.getCurrPosition());
+        assertEquals(1450, testPlayer.getCash());
+    }
+//======================================================================================================================
+    @Test
+    void testAdvanceToUtilityActionGoesToNearestUtility(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(13);
+        SpecialActionCard advAction = new advanceToUtilitiesAction(false);
+
+        //act
+        advAction.doAction(testPlayer);
+
+        //assert
+        assertEquals(28, testPlayer.getCurrPosition());
+    }
+
+    @Test
+    void testAdvanceToUtilityActionGoesToNearestUtilityInCompleteLoop(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(29);
+        SpecialActionCard advAction = new advanceToUtilitiesAction(false);
+
+        //act
+        advAction.doAction(testPlayer);
+
+        //assert
+        assertEquals(12, testPlayer.getCurrPosition());
+    }
+
+    @Test
+    void testAdvanceToUtilityActionGoesToNextUtility(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(1);
+        Player testPlayer = board.getPlayers().get(0);
+        testPlayer.setCurrPosition(12);
+        SpecialActionCard advAction = new advanceToUtilitiesAction(false);
+
+        //act
+        advAction.doAction(testPlayer);
+
+        //assert
+        assertEquals(28, testPlayer.getCurrPosition());
+    }
+
+    @Test
+    void testAdvanceToUtilityActionPaysRent(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(2);
+        Player testPlayer = board.getPlayers().get(0);
+        Player testOwner = board.getPlayers().get(1);
+        testPlayer.setCurrPosition(12);
+        SpecialActionCard advAction = new advanceToUtilitiesAction(false);
+        PropertySpace space = (PropertySpace) board.getBoardSpace(28);
+        space.setOwner(testOwner);
+        testPlayer.setDiceroll(12);
+
+        //act - player pays 12*4
+        advAction.doAction(testPlayer);
+
+        //assert
+        assertEquals(28, testPlayer.getCurrPosition());
+        assertEquals(1452, testPlayer.getCash());
+    }
+
+    @Test
+    void testAdvanceToRailwayActionPaysTenTimesDiceRoll(){
+        //arrange
+        Board board = TestBoardBootstrapper.getBoard(2);
+        Player testPlayer = board.getPlayers().get(0);
+        Player testOwner = board.getPlayers().get(1);
+        testPlayer.setCurrPosition(12);
+        SpecialActionCard advAction = new advanceToUtilitiesAction(true);
+        PropertySpace space = (PropertySpace) board.getBoardSpace(28);
+        space.setOwner(testOwner);
+        testPlayer.setDiceroll(12);
+
+        //act - player pays double 12*10=120
+        advAction.doAction(testPlayer);
+
+        //assert
+        assertEquals(28, testPlayer.getCurrPosition());
+        assertEquals(1380, testPlayer.getCash());
+    }
+
+
 }

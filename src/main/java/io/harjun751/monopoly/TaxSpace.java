@@ -1,4 +1,5 @@
 package io.harjun751.monopoly;
+
 public class TaxSpace extends BoardSpace {
     public int position;
     public double value;
@@ -10,7 +11,7 @@ public class TaxSpace extends BoardSpace {
         value = Value;
     }
 
-    public void payTax(Player player){
+    public void payTax(Player player) {
         player.pay(value, player.getBoard().getBanker());
     }
 }

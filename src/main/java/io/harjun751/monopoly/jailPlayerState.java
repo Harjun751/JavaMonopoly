@@ -1,5 +1,4 @@
 package io.harjun751.monopoly;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class jailPlayerState implements PlayerStateBehaviour {
     Player player;
@@ -11,10 +10,10 @@ public class jailPlayerState implements PlayerStateBehaviour {
         player.setCurrPosition(10);
     }
 
-    public void doTurn(){
+    public void doTurn() {
         // Check for gooj card
         // if have, immediately expend it
-        if (player.getGoojCards().size()>0){
+        if (player.getGoojCards().size() > 0) {
             player.changeState(new defaultPlayerState(player));
             player.removeGoojCard();
             return;
@@ -23,13 +22,13 @@ public class jailPlayerState implements PlayerStateBehaviour {
         // Roll dice
         int diceRoll1 = player.rollDice();
         int diceRoll2 = player.rollDice();
-        if (diceRoll1 == diceRoll2 || turnsInJail==2){
+        if (diceRoll1 == diceRoll2 || turnsInJail == 2) {
             // gooj!
             player.movePlayer(diceRoll1 + diceRoll2);
             player.changeState(new defaultPlayerState(player));
             player.handlePlayerLanding();
-        } else{
-            turnsInJail+=1;
+        } else {
+            turnsInJail += 1;
         }
     }
 }
