@@ -50,8 +50,6 @@ public class StatisticsCollector implements Subscriber {
             }
             text2 = text2 + (key + ", " + name + ", " + rentCollectedMap.get(key) + "\n");
         }
-        System.out.println(text1);
-        System.out.println(text2);
         try {
             FileWriter myWriter = new FileWriter("landedmap.csv");
             myWriter.write(text1);

@@ -6,7 +6,7 @@ public class Monopoly {
             BoardBootstrapper.getBoard(5).playGame();
             System.out.println(i + " finished");
         }
-//        StatisticsCollector.getInstance().export();
-//        EventLogger.getInstance().export();
+        StatisticsCollector.getInstance().export();
+        EventLogger.getInstance().export();
     }
 }
