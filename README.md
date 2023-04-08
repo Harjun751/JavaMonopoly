@@ -8,7 +8,11 @@ I couldn't find (or didn't bother to find) any statistics on the best properties
 Big media is lying to you.
 
 
-# How to run?
+# Implementation
+## Class Diagram
+![Class Diagram](mdImages/ClassDiagram.png)
+
+## How to run?
 If you want to change parameters of the simulation:
 
 Clone the repository, and use ```gradlew run``` in the cli at the project dir.
@@ -21,7 +25,7 @@ Download the build in the github releases, and run the .bat or .sh or whatever p
 To get your own data. The program runs simulations of the game, and at the end outputs a .csv of data. The data collected includes where players land, and how much rent is paid at each space in the board.
 
 ## I want more data!
-Create your own data collector class that implements the ```subscriber``` interface, and log virtually any data you want. Feel free to fork or make a PR if you care.
+Create your own data collector class that implements the ```subscriber``` interface, subscribe it to the relevant class, and log virtually any data you want. Feel free to fork or make a PR if you care.
 
 # Constraints
 ## Developer stupidity
