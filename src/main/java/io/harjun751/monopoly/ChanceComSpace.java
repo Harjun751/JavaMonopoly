@@ -1,4 +1,5 @@
 package io.harjun751.monopoly;
+
 public class ChanceComSpace extends BoardSpace {
     private int position;
     private boolean isChanceSpace;

@@ -1,4 +1,5 @@
 package io.harjun751.monopoly;
+
 public abstract class SpecialActionCard {
     public int id;
     public String description;

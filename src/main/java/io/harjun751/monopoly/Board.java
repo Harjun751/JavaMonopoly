@@ -1,35 +1,34 @@
 package io.harjun751.monopoly;
+
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.*;
 import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Board {
     private ArrayList<SpecialActionCard> chanceCards;
     private ArrayList<SpecialActionCard> comChestCards;
     private ArrayList<BoardSpace> boardSpaces;
-    private CopyOnWriteArrayList<Player> players;
+    private final CopyOnWriteArrayList<Player> players;
     private Player banker;
-    private int turns=0;
+    private int turns = 0;
 
     public Board() {
-        chanceCards = new ArrayList<SpecialActionCard> ();
-        comChestCards = new ArrayList<SpecialActionCard> ();
-        boardSpaces = new ArrayList<BoardSpace> ();
-        players = new CopyOnWriteArrayList<Player> ();
+        chanceCards = new ArrayList<SpecialActionCard>();
+        comChestCards = new ArrayList<SpecialActionCard>();
+        boardSpaces = new ArrayList<BoardSpace>();
+        players = new CopyOnWriteArrayList<Player>();
         banker = null;
     }
 
-    public void playGame(){
-        while (players.size()!=0){
-            for (Player player : players){
+    public void playGame() {
+        while (players.size() != 0) {
+            for (Player player : players) {
                 player.doTurn();
-                turns+=1;
-                if (turns>1000){
+                turns += 1;
+                if (turns > 1000) {
                     // end game by removing all players
-                    for (Player remove : players){
+                    for (Player remove : players) {
                         this.removeBankruptPlayer(remove);
                     }
                     break;
@@ -37,78 +36,87 @@ public class Board {
             }
         }
     }
-    
-    public BoardSpace getBoardSpace(int position){
+
+    public BoardSpace getBoardSpace(int position) {
         List<BoardSpace> space = this.boardSpaces.stream()
-            .filter(boardspace -> boardspace.position == position)
-            .collect(Collectors.toList());
-        if (space.size()==0){
+                .filter(boardspace -> boardspace.position == position)
+                .toList();
+        if (space.size() == 0) {
             return null;
         } else {
             return space.get(0);
         }
     }
 
-    public void removeBankruptPlayer(Player player){
+    public void removeBankruptPlayer(Player player) {
         this.players.remove(player);
-        if (players.size()==1){
-//            System.out.println("Game ended! 1 player remaining!");
+        if (players.size() == 1) {
             Player winner = players.get(0);
-//            System.out.println("Player won with $"+winner.getCash()+" and "+winner.getProperties().size()+" properties");
             this.players.remove(winner);
         }
-//        System.out.println("Bankrupted...");
     }
-
 
 
     // Getters/Setters
-    public ArrayList<BoardSpace> getBoardSpaces(){
+    public ArrayList<BoardSpace> getBoardSpaces() {
         return boardSpaces;
     }
-    public void setBoardSpaces(ArrayList<BoardSpace> BoardSpaces){
+
+    public void setBoardSpaces(ArrayList<BoardSpace> BoardSpaces) {
         boardSpaces = BoardSpaces;
     }
-    public ArrayList<SpecialActionCard> getChanceCards(){
+
+    public ArrayList<SpecialActionCard> getChanceCards() {
         return chanceCards;
     }
-    public SpecialActionCard getTopChanceCard(){
+
+    public void setChanceCards(ArrayList<SpecialActionCard> ChanceCards) {
+        Collections.shuffle(ChanceCards);
+        this.chanceCards = ChanceCards;
+    }
+
+    public SpecialActionCard getTopChanceCard() {
         SpecialActionCard card = chanceCards.get(0);
         chanceCards.remove(0);
         return card;
     }
-    public void insertChanceCard(SpecialActionCard card){
+
+    public void insertChanceCard(SpecialActionCard card) {
         chanceCards.add(0, card);
     }
-    public void setChanceCards(ArrayList<SpecialActionCard> ChanceCards){
-        Collections.shuffle(ChanceCards);
-        this.chanceCards = ChanceCards;
-    }
-    public ArrayList<SpecialActionCard> getComChestCards(){
+
+    public ArrayList<SpecialActionCard> getComChestCards() {
         return comChestCards;
     }
-    public SpecialActionCard getTopComChestCard(){
+
+    public void setComChestCards(ArrayList<SpecialActionCard> ComChestCards) {
+        Collections.shuffle(ComChestCards);
+        this.comChestCards = ComChestCards;
+    }
+
+    public SpecialActionCard getTopComChestCard() {
         SpecialActionCard card = comChestCards.get(0);
         comChestCards.remove(0);
         return card;
     }
-    public void insertComChestCard(SpecialActionCard card){
+
+    public void insertComChestCard(SpecialActionCard card) {
         comChestCards.add(0, card);
     }
-    public void setComChestCards(ArrayList<SpecialActionCard> ComChestCards){
-        Collections.shuffle(ComChestCards);
-        this.comChestCards = ComChestCards;
-    }
+
     public List<Player> getPlayers() {
         return players;
     }
+
     public void addPlayers(Player player) {
         this.players.add(player);
         player.setBoard(this);
     }
+
     public Player getBanker() {
         return banker;
     }
+
     public void setBanker(Player banker) {
         this.banker = banker;
     }

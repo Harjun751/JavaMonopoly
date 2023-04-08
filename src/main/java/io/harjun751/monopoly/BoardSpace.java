@@ -1,4 +1,5 @@
 package io.harjun751.monopoly;
+
 public abstract class BoardSpace {
     public int position;
     public String name;

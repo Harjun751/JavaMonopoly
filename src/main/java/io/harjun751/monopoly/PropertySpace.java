@@ -1,16 +1,17 @@
 package io.harjun751.monopoly;
-public abstract class PropertySpace extends BoardSpace{
+
+public abstract class PropertySpace extends BoardSpace {
     private int position;
     private String name;
     private double buyCost;
     private double mortgagePrice;
-    private double unmortgagePrice;
+    private final double unmortgagePrice;
     private boolean isMortgaged;
     private Player owner;
 
 
     public PropertySpace(int Position, String Name, double BuyCost, double MortgagePrice, double UnmortgagePrice) {
-        super(Position,Name);
+        super(Position, Name);
         position = Position;
         name = Name;
         buyCost = BuyCost;
@@ -20,29 +21,33 @@ public abstract class PropertySpace extends BoardSpace{
         owner = null;
     }
 
-    public Player getOwner(){
+    public Player getOwner() {
         return owner;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+        if (owner != null) {
+            owner.addProperties(this);
+        }
     }
 
     public abstract double getRent();
 
-    public void mortgage(){
-        if (!this.isMortgaged){
+    public void mortgage() {
+        if (!this.isMortgaged) {
             this.isMortgaged = true;
             this.owner.getBoard().getBanker().pay(this.mortgagePrice, this.owner);
         }
     }
 
-    public void unmortgage(){
-        if (this.isMortgaged){
-            if (this.owner.getCash() >= this.unmortgagePrice){
+    public void unmortgage() {
+        if (this.isMortgaged) {
+            if (this.owner.getCash() >= this.unmortgagePrice) {
                 this.owner.pay(this.unmortgagePrice, this.owner.getBoard().getBanker());
             }
         }
     }
-
-
-
 
     // Getters and setters
     public int getPosition() {
@@ -83,12 +88,5 @@ public abstract class PropertySpace extends BoardSpace{
 
     public void setMortgaged(boolean isMortgaged) {
         this.isMortgaged = isMortgaged;
-    }
-
-    public void setOwner(Player owner) {
-        this.owner = owner;
-        if (owner!=null){
-            owner.addProperties(this);
-        }
     }
 }
