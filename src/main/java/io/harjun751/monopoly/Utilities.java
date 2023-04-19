@@ -9,6 +9,9 @@ public class Utilities extends PropertySpace {
     }
 
     public double getRent() {
+        if (this.getOwner()==null){
+            return 4;
+        }
         List<Utilities> utilities = this.getOwner().getProperties().stream()
                 .filter(boardspace -> boardspace instanceof Utilities)
                 .map(property -> (Utilities) property)

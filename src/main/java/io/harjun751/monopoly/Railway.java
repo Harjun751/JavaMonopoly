@@ -9,6 +9,9 @@ public class Railway extends PropertySpace {
     }
 
     public double getRent() {
+        if (this.getOwner()==null){
+            return 25;
+        }
         List<Railway> railways = this.getOwner().getProperties().stream()
                 .filter(boardspace -> boardspace instanceof Railway)
                 .map(property -> (Railway) property)

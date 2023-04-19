@@ -72,6 +72,9 @@ public class TitleDeed extends PropertySpace {
 
     public double getRent() {
         // Check for full color set
+        if (this.getOwner()==null){
+            return rent;
+        }
         boolean isFullColorSet = true;
         ArrayList<BoardSpace> boardSpaces = this.getOwner().getBoard().getBoardSpaces();
         List<TitleDeed> propertyColorSet = boardSpaces.stream()
