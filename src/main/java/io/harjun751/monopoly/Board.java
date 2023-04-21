@@ -12,7 +12,16 @@ public class Board {
     private final CopyOnWriteArrayList<Player> players;
     private Player banker;
     private int turns = 0;
+    private int maxTurns;
 
+    public Board(int maxTurns) {
+        chanceCards = new ArrayList<SpecialActionCard>();
+        comChestCards = new ArrayList<SpecialActionCard>();
+        boardSpaces = new ArrayList<BoardSpace>();
+        players = new CopyOnWriteArrayList<Player>();
+        banker = null;
+        this.maxTurns = maxTurns;
+    }
     public Board() {
         chanceCards = new ArrayList<SpecialActionCard>();
         comChestCards = new ArrayList<SpecialActionCard>();
@@ -26,7 +35,8 @@ public class Board {
             for (Player player : players) {
                 player.doTurn();
                 turns += 1;
-                if (turns > 1000) {
+                TurnTracker.getInstance().incrementTurn();
+                if (turns >= maxTurns) {
                     // end game by removing all players
                     for (Player remove : players) {
                         this.removeBankruptPlayer(remove);

@@ -2,25 +2,17 @@ package io.harjun751.monopoly;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class StatisticsCollector implements Subscriber {
 
-    private static StatisticsCollector instance;
     private final HashMap<Integer, Integer> landedMap;
     private final HashMap<Integer, Double> rentCollectedMap;
 
-    private StatisticsCollector() {
+    public StatisticsCollector() {
         this.landedMap = new HashMap<Integer, Integer>();
         this.rentCollectedMap = new HashMap<Integer, Double>();
-    }
-
-    public static StatisticsCollector getInstance() {
-        if (instance == null) {
-            StatisticsCollector collector = new StatisticsCollector();
-            instance = collector;
-        }
-        return instance;
     }
 
     public void update(Player player) {
@@ -29,7 +21,7 @@ public class StatisticsCollector implements Subscriber {
     public void export() {
         String text1 = "position, name, landings\n";
         String text2 = "position, name, rent collected\n";
-        Board referenceBoard = BoardBootstrapper.getBoard(1);
+        Board referenceBoard = BoardBootstrapper.getBoard(1,0,new ArrayList<>());
         for (Integer key : landedMap.keySet()) {
             BoardSpace space = referenceBoard.getBoardSpace(key);
             String name = "";

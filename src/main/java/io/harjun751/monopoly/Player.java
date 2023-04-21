@@ -28,8 +28,8 @@ public class Player {
         this.goojCards = new ArrayList<getOutJailAction>();
         this.state = new defaultPlayerState(this);
         this.subscribers = new ArrayList<Subscriber>();
-        subscribers.add(StatisticsCollector.getInstance());
-        subscribers.add(EventLogger.getInstance());
+//        subscribers.add(StatisticsCollector.getInstance());
+//        subscribers.add(EventLogger.getInstance());
     }
 
     public Player(int ID, double Cash) {
@@ -39,6 +39,15 @@ public class Player {
         this.properties = new ArrayList<PropertySpace>();
         this.goojCards = new ArrayList<getOutJailAction>();
         this.state = new defaultPlayerState(this);
+    }
+
+    public Player(Player another) {
+        this.id = another.id;
+        this.cash = another.cash;
+        this.currPosition = another.currPosition;
+        this.properties = another.properties;
+        this.goojCards = another.goojCards;
+        this.state = another.state;
     }
 
     public int rollDice() {

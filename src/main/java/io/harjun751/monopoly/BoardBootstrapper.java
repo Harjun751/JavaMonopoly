@@ -3,8 +3,8 @@ package io.harjun751.monopoly;
 import java.util.ArrayList;
 
 final class BoardBootstrapper {
-    public static Board getBoard(int playerCount) {
-        Board board = new Board();
+    public static Board getBoard(int playerCount, int maxTurns, ArrayList<Subscriber> subscribers) {
+        Board board = new Board(maxTurns);
 
 
         // initialize the special action cards
@@ -50,6 +50,9 @@ final class BoardBootstrapper {
         // Initialize players
         for (int i = 0; i < playerCount; i++) {
             Player player = new Player(i);
+            for (Subscriber subscriber : subscribers){
+                player.subscribe(subscriber);
+            }
             board.addPlayers(player);
         }
         Player banker = new Player(1000, 1000000000);
