@@ -7,6 +7,7 @@ public class advanceToUtilitiesAction extends SpecialActionCard {
     private final boolean payTenTimes;
 
     public advanceToUtilitiesAction(boolean PayTenTimes) {
+        super("Advance to the nearest Utility.");
         payTenTimes = PayTenTimes;
     }
 

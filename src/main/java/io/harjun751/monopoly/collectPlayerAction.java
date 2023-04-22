@@ -4,6 +4,7 @@ public class collectPlayerAction extends SpecialActionCard {
     private final double value;
 
     public collectPlayerAction(double Value) {
+        super("Collect " + Value + " from every player.");
         value = Value;
     }
 

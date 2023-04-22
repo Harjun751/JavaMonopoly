@@ -28,8 +28,6 @@ public class Player {
         this.goojCards = new ArrayList<getOutJailAction>();
         this.state = new defaultPlayerState(this);
         this.subscribers = new ArrayList<Subscriber>();
-//        subscribers.add(StatisticsCollector.getInstance());
-//        subscribers.add(EventLogger.getInstance());
     }
 
     public Player(int ID, double Cash) {
@@ -116,28 +114,30 @@ public class Player {
             }
         } else if (space instanceof TaxSpace tax) {
             tax.payTax(this);
-            this.notifySubscribers(EventType.GENERIC, this.id + " paid tax!\n");
+            this.notifySubscribers(EventType.GENERIC, "Player " + this.id + " paid tax!\n");
         } else if (space instanceof ChanceComSpace ccSpace) {
             SpecialActionCard card = null;
             if (ccSpace.isChanceSpace()) {
                 card = this.board.getTopChanceCard();
+				this.notifySubscribers(EventType.GENERIC, "Player " + this.id + " drew a chance card!\nCard Description: " + card.description+"\n");
                 if (!(card instanceof getOutJailAction)) {
                     this.board.insertChanceCard(card);
                 }
             } else {
                 card = this.board.getTopComChestCard();
+				this.notifySubscribers(EventType.GENERIC, "Player " + this.id + " drew a community chest card!\nCard Description: " + card.description+"\n");
                 if (!(card instanceof getOutJailAction)) {
                     this.board.insertComChestCard(card);
                 }
             }
             card.doAction(this);
-            this.notifySubscribers(EventType.GENERIC, this.id + " drew a chance/coms card!\n");
         } else if (space instanceof GoJailSpace) {
             this.changeState(new jailPlayerState(this));
-            this.notifySubscribers(EventType.GENERIC, this.id + " went to jail!\n");
+            this.notifySubscribers(EventType.GENERIC, "Player " + this.id + " went to jail!\n");
         } else {
-            this.notifySubscribers(EventType.GENERIC, this.id + " landed on nothing. Position: " + this.getCurrPosition() + "\n");
+            this.notifySubscribers(EventType.GENERIC, "Player " + this.id + " landed on nothing. Position: " + this.getCurrPosition() + "\n");
         }
+		TurnTracker.getInstance().incrementTurn();
     }
 
     public boolean pay(double amnt, Player player) {

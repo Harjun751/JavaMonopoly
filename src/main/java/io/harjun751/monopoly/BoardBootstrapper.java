@@ -2,7 +2,7 @@ package io.harjun751.monopoly;
 
 import java.util.ArrayList;
 
-final class BoardBootstrapper {
+public final class BoardBootstrapper {
     public static Board getBoard(int playerCount, int maxTurns, ArrayList<Subscriber> subscribers) {
         Board board = new Board(maxTurns);
 

@@ -21,6 +21,10 @@ public class Log {
 
     @Override
     public String toString() {
-        return "Game: " + game + " Turn: " + turn + stringList.toString()+"\n";
+        String logString = "Game: " + game + " Turn: " + turn +"\n";
+        for (String str : stringList){
+            logString = logString+str;
+        }
+        return  logString+"\n";
     }
 }

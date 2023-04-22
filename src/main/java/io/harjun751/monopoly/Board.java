@@ -34,9 +34,7 @@ public class Board {
         while (players.size() != 0) {
             for (Player player : players) {
                 player.doTurn();
-                turns += 1;
-                TurnTracker.getInstance().incrementTurn();
-                if (turns >= maxTurns) {
+                if (TurnTracker.getInstance().getTurnCount() > maxTurns) {
                     // end game by removing all players
                     for (Player remove : players) {
                         this.removeBankruptPlayer(remove);
@@ -92,7 +90,7 @@ public class Board {
     }
 
     public void insertChanceCard(SpecialActionCard card) {
-        chanceCards.add(0, card);
+        chanceCards.add(card);
     }
 
     public ArrayList<SpecialActionCard> getComChestCards() {
@@ -111,7 +109,7 @@ public class Board {
     }
 
     public void insertComChestCard(SpecialActionCard card) {
-        comChestCards.add(0, card);
+        comChestCards.add(card);
     }
 
     public List<Player> getPlayers() {

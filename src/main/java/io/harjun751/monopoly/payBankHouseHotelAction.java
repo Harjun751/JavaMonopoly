@@ -5,6 +5,7 @@ public class payBankHouseHotelAction extends SpecialActionCard {
     private final double perHotel;
 
     public payBankHouseHotelAction(double PerHouse, double PerHotel) {
+        super("Pay to the bank " + PerHouse +" per house, " + PerHouse + " per hotel.");
         perHotel = PerHotel;
         perHouse = PerHouse;
     }

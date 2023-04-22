@@ -4,6 +4,7 @@ public class payPlayerAction extends SpecialActionCard {
     private final double value;
 
     public payPlayerAction(double Value) {
+        super("Pay every player " + Value+".");
         value = Value;
     }
 

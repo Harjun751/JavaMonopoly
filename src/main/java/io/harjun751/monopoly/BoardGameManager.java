@@ -19,11 +19,8 @@ public class BoardGameManager {
 
     public void play(){
         for (int i = 0; i < numGames; i++) {
-            BoardBootstrapper.getBoard(5, maxTurns, subscribers).playGame();
+            BoardBootstrapper.getBoard(players, maxTurns, subscribers).playGame();
             TurnTracker.getInstance().incrementGameCount();
-        }
-        for (Subscriber subscriber : subscribers){
-            subscriber.export();
         }
         TurnTracker.getInstance().resetGameCount();
     }

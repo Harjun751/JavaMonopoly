@@ -6,6 +6,7 @@ public class advanceToRailwayAction extends SpecialActionCard {
     private final boolean payDouble;
 
     public advanceToRailwayAction(boolean PayDouble) {
+        super("Advance to the nearest railway.");
         payDouble = PayDouble;
     }
 

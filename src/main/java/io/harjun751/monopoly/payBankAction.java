@@ -4,6 +4,7 @@ public class payBankAction extends SpecialActionCard {
     private final double value;
 
     public payBankAction(double Value) {
+        super("Pay " + Value + " to bank");
         value = Value;
     }
 

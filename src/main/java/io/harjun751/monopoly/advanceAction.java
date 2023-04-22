@@ -5,6 +5,7 @@ public class advanceAction extends SpecialActionCard {
     private int positionToBe;
 
     public advanceAction(boolean PayDouble, int PositionToBe) {
+        super("Advance to position " + PositionToBe+".");
         positionToBe = PositionToBe;
         payDouble = PayDouble;
     }

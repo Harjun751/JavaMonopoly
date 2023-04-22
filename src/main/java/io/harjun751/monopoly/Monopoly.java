@@ -11,5 +11,8 @@ public class Monopoly {
         subscriberList.add(collector);
         BoardGameManager manager = new BoardGameManager(100,1000,5,subscriberList);
         manager.play();
+
+        logger.export();
+        collector.export();
     }
 }

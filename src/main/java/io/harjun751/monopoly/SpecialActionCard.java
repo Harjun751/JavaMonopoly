@@ -6,4 +6,8 @@ public abstract class SpecialActionCard {
     public Board board;
 
     public abstract void doAction(Player cardDrawer);
+
+    public SpecialActionCard(String description) {
+        this.description = description;
+    }
 }
